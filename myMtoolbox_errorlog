@@ -1,0 +1,322 @@
+quacht@nodea1304:~/toolbox> bash myMtoolbox.sh
+
+##### REALIGNING KNOWN INDELS WITH GATK INDELREALIGNER...
+
+Realigning known indels for file ID18_Father_exome_mtExtractremap.csort.bam using /gpfs/home/quacht/toolbox/MToolBox/data/MITOMAP_HMTDB_known_indels.vcf as reference...
+Error: Could not find or load main class
+
+quacht@nodea1304:~/toolbox> java -Xmx4g -jar /opt/applications/gatk/3.3-0/GenomeAnalysisTK.jar -T IndelRealigner -R /gpfs/home/quacht/toolbox/MToolBox/data/chrRCRS.fa -I ID18_Proband_exome_mtExtractremap.csort.bam -o mtRmCsort.realigned.bam -targetIntervals /gpfs/home/quacht/toolbox/MToolBox/data/intervals_file_RCRS.list -known /gpfs/home/quacht/toolbox/MToolBox/data/MITOMAP_HMTDB_known_indels_RCRS.vcf
+INFO  15:38:06,307 HelpFormatter - --------------------------------------------------------------------------------
+INFO  15:38:06,310 HelpFormatter - The Genome Analysis Toolkit (GATK) v3.3-0-g37228af, Compiled 2014/10/24 01:07:22
+INFO  15:38:06,310 HelpFormatter - Copyright (c) 2010 The Broad Institute
+INFO  15:38:06,310 HelpFormatter - For support and documentation go to http://www.broadinstitute.org/gatk
+INFO  15:38:06,313 HelpFormatter - Program Args: -T IndelRealigner -R /gpfs/home/quacht/toolbox/MToolBox/data/chrRCRS.fa -I ID18_Proband_exome_mtExtractremap.csort.bam -o mtRmCsort.realigned.bam -targetIntervals /gpfs/home/quacht/toolbox/MToolBox/data/intervals_file_RCRS.list -known /gpfs/home/quacht/toolbox/MToolBox/data/MITOMAP_HMTDB_known_indels_RCRS.vcf
+INFO  15:38:06,329 HelpFormatter - Executing as quacht@nodea1304 on Linux 2.6.34-12-desktop amd64; Java HotSpot(TM) 64-Bit Server VM 1.8.0_40-b26.
+INFO  15:38:06,329 HelpFormatter - Date/Time: 2015/07/15 15:38:06
+INFO  15:38:06,329 HelpFormatter - --------------------------------------------------------------------------------
+INFO  15:38:06,329 HelpFormatter - --------------------------------------------------------------------------------
+INFO  15:38:07,442 GenomeAnalysisEngine - Strictness is SILENT
+INFO  15:38:07,613 GenomeAnalysisEngine - Downsampling Settings: No downsampling
+INFO  15:38:07,621 SAMDataSource$SAMReaders - Initializing SAMRecords in serial
+INFO  15:38:07,678 SAMDataSource$SAMReaders - Done initializing BAM readers: total time 0.06
+INFO  15:38:09,936 GATKRunReport - Uploaded run statistics report to AWS S3
+##### ERROR ------------------------------------------------------------------------------------------
+##### ERROR A USER ERROR has occurred (version 3.3-0-g37228af):
+##### ERROR
+##### ERROR This means that one or more arguments or inputs in your command are incorrect.
+##### ERROR The error message below tells you what is the problem.
+##### ERROR
+##### ERROR If the problem is an invalid argument, please check the online documentation guide
+##### ERROR (or rerun your command with --help) to view allowable command-line arguments for this tool.
+##### ERROR
+##### ERROR Visit our website and forum for extensive documentation and answers to
+##### ERROR commonly asked questions http://www.broadinstitute.org/gatk
+##### ERROR
+##### ERROR Please do NOT post this error to the GATK forum unless you have really tried to fix it yourself.
+##### ERROR
+##### ERROR MESSAGE: SAM/BAM file ID18_Proband_exome_mtExtractremap.csort.bam is malformed: SAM file doesn't have any read groups defined in the header.  The GATK no longer supports SAM files without read groups
+##### ERROR ------------------------------------------------------------------------------------------
+
+
+NEW ERROR REGARDING READ GROUPS:
+
+5:31
+
+quacht@nodea1304:~/toolbox> bash myMtoolbox.sh
+
+##### REALIGNING KNOWN INDELS WITH GATK INDELREALIGNER...
+
+Adding read groups to the bam files
+ERROR: Invalid argument ' #Read'.
+
+Replaces all read groups in the INPUT file with a new read group and assigns all reads to this read group in the OUTPUT BAMVersion: 1.0
+
+Version: 1.92(1464)
+
+
+Options:
+
+--help
+-h                            Displays options specific to this tool.
+
+--stdhelp
+-H                            Displays options specific to this tool AND options common to all Picard command line
+                              tools.
+
+--version                     Displays program version.
+
+INPUT=File
+I=File                        Input file (bam or sam).  Required.
+
+OUTPUT=File
+O=File                        Output file (bam or sam).  Required.
+
+SORT_ORDER=SortOrder
+SO=SortOrder                  Optional sort order to output in. If not supplied OUTPUT is in the same order as INPUT.
+                              Default value: null. Possible values: {unsorted, queryname, coordinate}
+
+RGID=String
+ID=String                     Read Group ID  Default value: 1. This option can be set to 'null' to clear the default
+                              value.
+
+RGLB=String
+LB=String                     Read Group Library  Required.
+
+RGPL=String
+PL=String                     Read Group platform (e.g. illumina, solid)  Required.
+
+RGPU=String
+PU=String                     Read Group platform unit (eg. run barcode)  Required.
+
+RGSM=String
+SM=String                     Read Group sample name  Required.
+
+RGCN=String
+CN=String                     Read Group sequencing center name  Default value: null.
+
+RGDS=String
+DS=String                     Read Group description  Default value: null.
+
+RGDT=Iso8601Date
+DT=Iso8601Date                Read Group run date  Default value: null.
+
+NEW ERROR REGARDING ALIGNMENT
+
+
+quacht@nodea1304:~/toolbox> bash myMtoolbox.sh
+
+##### REALIGNING KNOWN INDELS WITH GATK INDELREALIGNER...
+
+Adding read groups to the bam files
+[Wed Jul 15 17:36:19 PDT 2015] net.sf.picard.sam.AddOrReplaceReadGroups INPUT=  ID18_Father_exome_mtExtractremap.csort.bam OUTPUT=ID18_Father_exome_mtExtractr  emap.csort.bam.rg.bam SORT_ORDER=coordinate RGLB=_exome RGPL=ILLUMINA RGPU=L00  2 RGSM=RGID-_    RGID=1 VERBOSITY=INFO QUIET=false VALIDATION_STRINGENCY=STRIC  T COMPRESSION_LEVEL=5 MAX_RECORDS_IN_RAM=500000 CREATE_INDEX=false CREATE_MD5_  FILE=false
+[Wed Jul 15 17:36:19 PDT 2015] Executing as quacht@nodea1304 on Linux 2.6.34-1  2-desktop amd64; Java HotSpot(TM) 64-Bit Server VM 1.7.0_21-b11; Picard versio  n: 1.92(1464)
+INFO    2015-07-15 17:36:20     AddOrReplaceReadGroups  Created read group ID=  1 PL=ILLUMINA LB=_exome SM=RGID-_
+
+[Wed Jul 15 17:36:21 PDT 2015] net.sf.picard.sam.AddOrReplaceReadGroups done.   Elapsed time: 0.03 minutes.
+Runtime.totalMemory()=758710272
+Realigning known indels for file ID18_Father_exome_mtExtractremap.csort.bam us  ing /gpfs/home/quacht/toolbox/MToolBox/data/MITOMAP_HMTDB_known_indels.vcf as   reference...
+##### ERROR ------------------------------------------------------------------  ------------------------
+##### ERROR A USER ERROR has occurred (version 3.3-0-g37228af):
+##### ERROR
+##### ERROR This means that one or more arguments or inputs in your command ar  e incorrect.
+##### ERROR The error message below tells you what is the problem.
+##### ERROR
+##### ERROR If the problem is an invalid argument, please check the online doc  umentation guide
+##### ERROR (or rerun your command with --help) to view allowable command-line   arguments for this tool.
+##### ERROR
+##### ERROR Visit our website and forum for extensive documentation and answer  s to
+##### ERROR commonly asked questions http://www.broadinstitute.org/gatk
+##### ERROR
+##### ERROR Please do NOT post this error to the GATK forum unless you have re  ally tried to fix it yourself.
+##### ERROR
+##### ERROR MESSAGE: Invalid argument value '0' at position 12.
+##### ERROR ------------------------------------------------------------------  ------------------------
+
+
+
+
+ADDED SPACE INBETWEEN BACKSLASH AND THE FILE
+
+quacht@node0982:~/toolbox> java -Xmx4g \
+> -Djava.io.tmpdir=`pwd`/tmp \
+> -jar /opt/applications/gatk/3.3-0/GenomeAnalysisTK.jar \
+> -T IndelRealigner \
+> -R /gpfs/home/quacht/toolbox/MToolBox/data/chrRCRS.fa \
+> -I "${i}.rg.bam" \
+> -o "${i}.rgmtRmCsort.realigned.bam" \
+> -targetIntervals /gpfs/home/quacht/toolbox/MToolBox/data/intervals_file_RCRS.list \
+> -known /gpfs/home/quacht/toolbox/MToolBox/data/MITOMAP_HMTDB_known_indels_RCRS.vcf \
+> -compress 0;
+
+INFO  21:19:19,329 HelpFormatter - --------------------------------------------------------------------------------
+INFO  21:19:19,332 HelpFormatter - The Genome Analysis Toolkit (GATK) v3.3-0-g37228af, Compiled 2014/10/24 01:07:22
+INFO  21:19:19,332 HelpFormatter - Copyright (c) 2010 The Broad Institute
+INFO  21:19:19,333 HelpFormatter - For support and documentation go to http://www.broadinstitute.org/gatk
+INFO  21:19:19,337 HelpFormatter - Program Args: -T IndelRealigner -R /gpfs/home/quacht/toolbox/MToolBox/data/chrRCRS.fa -I ID18_Father_exome_mtExtractremap.csort.bam.rg.bam.rg.bam -o ID18_Father_exome_mtExtractremap.csort.bam.rg.bam.rgmtRmCsort.realigned.bam -targetIntervals /gpfs/home/quacht/toolbox/MToolBox/data/intervals_file_RCRS.list -known /gpfs/home/quacht/toolbox/MToolBox/data/MITOMAP_HMTDB_known_indels_RCRS.vcf -compress 0
+INFO  21:19:19,341 HelpFormatter - Executing as quacht@node0982 on Linux 2.6.34-12-desktop amd64; Java HotSpot(TM) 64-Bit Server VM 1.7.0_21-b11.
+INFO  21:19:19,342 HelpFormatter - Date/Time: 2015/07/15 21:19:19
+INFO  21:19:19,342 HelpFormatter - --------------------------------------------------------------------------------
+INFO  21:19:19,342 HelpFormatter - --------------------------------------------------------------------------------
+INFO  21:19:20,947 GenomeAnalysisEngine - Strictness is SILENT
+INFO  21:19:21,165 GenomeAnalysisEngine - Downsampling Settings: No downsampling
+INFO  21:19:21,175 SAMDataSource$SAMReaders - Initializing SAMRecords in serial
+INFO  21:19:23,491 GATKRunReport - Uploaded run statistics report to AWS S3
+##### ERROR ------------------------------------------------------------------------------------------
+##### ERROR A USER ERROR has occurred (version 3.3-0-g37228af):
+##### ERROR
+##### ERROR This means that one or more arguments or inputs in your command are incorrect.
+##### ERROR The error message below tells you what is the problem.
+##### ERROR
+##### ERROR If the problem is an invalid argument, please check the online documentation guide
+##### ERROR (or rerun your command with --help) to view allowable command-line arguments for this tool.
+##### ERROR
+##### ERROR Visit our website and forum for extensive documentation and answers to
+##### ERROR commonly asked questions http://www.broadinstitute.org/gatk
+##### ERROR
+##### ERROR Please do NOT post this error to the GATK forum unless you have really tried to fix it yourself.
+##### ERROR
+##### ERROR MESSAGE: Couldn't read file /gpfs/home/quacht/toolbox/ID18_Father_exome_mtExtractremap.csort.bam.rg.bam.rg.bam because java.io.FileNotFoundException: ID18_Father_exome_mtExtractremap.csort.bam.rg.bam.rg.bam (No such file or directory)
+##### ERROR ------------------------------------------------------------------------
+
+
+fixed the input file
+
+
+
+In regards to Indel Realignment:
+
+
+##### ERROR MESSAGE: Input files reads and reference have incompatible contigs: No overlapping contigs found.
+##### ERROR   reads contigs = [gi|251831106|ref|NC_012920.1|]
+##### ERROR   reference contigs = [chrRCRS]
+##### ERROR ------------------------------------------------------------------------------------------
+
+changed the path to the reference to match the particular fasta file that i remapped to earlier in the pipeline
+
+##### ERROR MESSAGE: Fasta dict file /gpfs/home/quacht/ID18exome/rCRS.dict for reference /gpfs/home/quacht/ID18exome/rCRS.fasta does not exist. Please see http://gatkforums.broadinstitute.org/discussion/1601/how-can-i-prepare-a-fasta-file-to-use-as-reference for help creating it.
+
+
+
+created a rCRS dict file.
+
+Input files knownAlleles and reference have incompatible contigs: No overlapping contigs found.
+##### ERROR   knownAlleles contigs = [chrRCRS]
+##### ERROR   reference contigs = [gi|251831106|ref|NC_012920.1|]
+
+remap to chrRCRS instead
+8088121.garibaldi01-adm.cluster.net
+
+forgot to change the DIRECTORY!!!!!
+
+TESTING PIPELINE (W/ REMAP)
+quacht@garibaldi00:~/ID18exome/merge/chrRCRS_remap> qsub -l walltime=3:00:00 pipeline_newRef.sh
+8088125.garibaldi01-adm.cluster.net
+
+TESTING ADD/REPLACE AND INDEL
+quacht@garibaldi00:~/toolbox> qsub myMtoolbox.sh
+8088179.garibaldi01-adm.cluster.net
+
+TESTING MERGE W/ RG
+in mergerg, the merging worked!
+--> looking into the pipeline, it looks like readgroups are lost at the remapping stage (bwa mem), so investigating that.
+
+the goal here is to make sure that the things are mapped to chrRCRS and to make sure that the correct read groups are used. 
+bwa mem -R '@RG\tID:foo\tSM:bar' <rest of arguments>
+--> read groups are pretty arbitrary considering that samples are on multiple lanes so the one for the merged bam could be L000 or soemthing. 
+
+next steps:
+
+take those remapped to RCRS and run through the myMtoolbox!
+run through MarkedDuplicates!
+make Variant Calling work! 
+
+SO CLOSE
+
+ERROR: Option 'RGPL' is required. in running myMtoolbox in the chrRCRS_remap folder!
+-waiting 
+
+quacht@garibaldi00:~/debug> qsub -l walltime=2:00:00 simplepipe.sh
+8096432.garibaldi01-adm.cluster.net
+
+
+in chrRCRS folder: 
+trying bwa mem -R "@RG\tID:ID18_Proband_exome_L002\tPL:ILLUMINA\tPU:L002 LB:ID18_Proband_exome\tSM:ID18_Proband_exome" 
+@RG     ID:ID18_Proband_exome_L002      PL:ILLUMINA     PU:L002 LB:ID18_Proband_exome    SM:ID18_Proband_exome
+
+
+
+IN chrRCRS folder, ran myMtoolbox.sh. REPLACEREADGROUPS WORKED FINALLY however,
+
+ERROR MESSAGE: SAM/BAM file ID18_Father_exome_mtExtractremap.csort.bam.rg.bam is malformed: Error parsing SAM header. Problem parsing @RG key:value pair. Line:
+##### ERROR @RG ID:1    PL:ILLUMINA     PU:L00  LB:ID18_Father_exome    SM:; File /gpfs/home/quacht/ID18exome/merge/chrRCRS_remap/ID18_Father_exome_mtExtractremap.csort.bam.rg.bam; Line number 3
+
+so a look at the header reveals: 
+quacht@garibaldi00:~/ID18exome/merge/chrRCRS_remap> cat malformedheader.txt
+@HD     VN:1.4  SO:coordinate
+@SQ     SN:chrRCRS      LN:16569
+@RG     ID:1    PL:ILLUMINA     PU:L00  LB:ID18_Father_exome    SM:
+@PG     ID:bwa  PN:bwa  VN:0.7.10-r789  CL:bwa mem chrRCRS.fa ID18_Father_exome_mtExtract_1.fq ID18_Father_exome_mtExtract_2.fq
+
+EDITED THE COMMAND FOR THE replaceoraddreadgroups, it worked.
+next error: the indel religner reference was wrong (changed to chrRCRS.fa)
+
+##### ERROR ------------------------------------------------------------------------------------------
+##### ERROR A USER ERROR has occurred (version 3.3-0-g37228af):
+##### ERROR
+##### ERROR This means that one or more arguments or inputs in your command are incorrect.
+##### ERROR The error message below tells you what is the problem.
+##### ERROR
+##### ERROR If the problem is an invalid argument, please check the online documentation guide
+##### ERROR (or rerun your command with --help) to view allowable command-line arguments for this tool.
+##### ERROR
+##### ERROR Visit our website and forum for extensive documentation and answers to
+##### ERROR commonly asked questions http://www.broadinstitute.org/gatk
+##### ERROR
+##### ERROR Please do NOT post this error to the GATK forum unless you have really tried to fix it yourself.
+##### ERROR
+##### ERROR MESSAGE: Invalid command line: Cannot process the provided BAM file(s) because they were not indexed.  The GATK does offer limited processing of u
+nindexed BAMs in --unsafe mode, but this GATK feature is currently unsupported.
+##### ERROR -----------------------------------------------------------
+
+INDEX ALL OUTPUTS OF ADDORREPLACERG before sending to realigner.
+
+YAY I GOT IT TO WORK!!!!
+
+___________________-
+7/20/15 ERROR getting myAssembleMTgenome.py to work
+
+....
+[sam_read1] reference 'chrRCRS' is recognized as '*'.
+[sam_read1] reference 'chrRCRS' is recognized as '*'.
+[sam_read1] reference 'chrRCRS' is recognized as '*'.
+[sam_read1] reference 'chrRCRS' is recognized as '*'.
+[sam_read1] reference 'chrRCRS' is recognized as '*'.
+[sam_read1] reference 'chrRCRS' is recognized as '*'.
+[sam_read1] reference 'chrRCRS' is recognized as '*'.
+[sam_read1] reference 'chrRCRS' is recognized as '*'.
+[sam_read1] reference 'chrRCRS' is recognized as '*'.
+[sam_read1] reference 'chrRCRS' is recognized as '*'.
+[sam_read1] reference 'chrRCRS' is recognized as '*'.
+[sam_read1] reference 'chrRCRS' is recognized as '*'.
+[sam_read1] reference 'chrRCRS' is recognized as '*'.
+[sam_read1] reference 'chrRCRS' is recognized as '*'.
+[sam_read1] reference 'chrRCRS' is recognized as '*'.
+[sam_read1] reference 'chrRCRS' is recognized as '*'.
+[sam_read1] reference 'chrRCRS' is recognized as '*'.
+[sam_read1] reference 'chrRCRS' is recognized as '*'.
+[sam_read1] reference 'chrRCRS' is recognized as '*'.
+[sam_read1] reference 'chrRCRS' is recognized as '*'.
+[sam_read1] reference 'chrRCRS' is recognized as '*'.
+[sam_read1] reference 'chrRCRS' is recognized as '*'.
+[sam_read1] reference 'chrRCRS' is recognized as '*'.
+[sam_read1] reference 'chrRCRS' is recognized as '*'.
+[mpileup] 1 samples in 1 input files
+<mpileup> Set max per-file depth to 8000
+Traceback (most recent call last):
+  File "/gpfs/home/quacht/toolbox/myAssembleMTgenome.py", line 427, in <module>
+    mut_events = mtvcf_main_analysis(mt_table, sam_file, sample_name, tail=tail)
+  File "/gpfs/home/quacht/toolbox/mtVariantCaller.py", line 911, in mtvcf_main_analysis
+    Indels[name2]=[]
+TypeError: unhashable type: 'list'
+
+looking into mpileup
