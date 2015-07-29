@@ -2,7 +2,7 @@
 set -e
 set -o pipefail
 
-cd /gpfs/home/quacht/test_myMtoolbox_ID18Father/try1
+cd /gpfs/home/quacht/test_myMtoolbox_ID18Father/
 module load samtools
 module load python
 module load bwa
@@ -24,7 +24,7 @@ echo "##### REALIGNING KNOWN INDELS WITH GATK INDELREALIGNER..."
 echo ""
 for i in $(ls *ID18_Father_exome_mtExtractremap.csort.bam); do 
 echo "Currently working with ${i}..."
-sampleName="$(echo "${i}.rg.bam" | sed 's/_mtExtractremap.csort.bam.rg.bam//')"
+sampleName="$(echo ${i} | sed 's/_exome_mtExtractremap.csort.bam//')"
 echo "Adding read groups to the bam files";
 java -Xmx2g \
 -Djava.io.tmpdir=`pwd`/tmp \
@@ -71,11 +71,13 @@ TMP_DIR=`pwd`/tmp; done
 
 for i in $(ls *rg.ra.marked.bam); do
 echo "Converting ${i} to sam file..."
+markedSam="$(echo ${i} | sed 's/.bam/.sam/')"
+echo "this is the output: ${markedSam}"
 java -Xmx4g \
 -Djava.io.tmpdir=`pwd`/tmp \
 -jar ${externaltoolsfolder}SamFormatConverter.jar \
 INPUT="${i}" \
-OUTPUT="${i}.marked.sam" \
+OUTPUT="$markedSam" \
 TMP_DIR="`pwd`/tmp";
 #commented out the following command (originally from MtoolBox, since it gave me errors during future bam analysis)
 #grep -v "^@" *marked.sam > ${i}.OUT2.sam
@@ -88,3 +90,27 @@ done
 #mv *marked.bam.marked.sam MarkTmp
 #tar -czf MarkTmp.tar.gz MarkTmp
 #rm -R MarkTmp
+
+# ASSEMBLE CONTIGS, GET MT-TABLES...
+echo ""
+echo "##### ASSEMBLING MT GENOMES WITH ASSEMBLEMTGENOME..."
+echo ""
+echo "WARNING: values of tail < 5 are deprecated and will be replaced with 5"
+echo ""	
+#for each directory labeled as an output, 
+for i in $(ls *rg.ra.marked.bam); do 
+outhandle=$(echo ${i} | sed 's/.rg.ra.marked.bam//g')-mtDNAassembly; 
+echo $outhandle
+python /gpfs/home/quacht/toolbox/myAssembleMTgenome.py \
+-i ${i} \
+-o ${outhandle} \
+-r ${fasta_path} \
+-f ${mtdb_fasta} \
+-a ${hg19_fasta} \
+-s ${samtoolsexe} \
+-FCP #${assembleMTgenome_OPTS}
+done > logassemble.txt
+echo ""
+echo "##### GENERATING VCF OUTPUT..."
+# ... AND VCF OUTPUT
+python VCFoutput.py -r ${ref}
