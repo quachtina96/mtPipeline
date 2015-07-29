@@ -73,3 +73,18 @@ echo $i
 samtools view -h $i > ${i}.sam
 done
 
+for i in $(ls *rg.ra.marked.bam); do
+echo "Converting ${i} to sam file..."
+markedSam="$(echo ${i} | sed 's/.bam/.sam/')"
+echo "this is the output: ${markedSam}"
+java -Xmx4g \
+-Djava.io.tmpdir=`pwd`/tmp \
+-jar ${externaltoolsfolder}SamFormatConverter.jar \
+INPUT="${i}" \
+OUTPUT="$markedSam" \
+TMP_DIR="`pwd`/tmp";
+#commented out the following command (originally from MtoolBox, since it gave me errors during future bam analysis)
+grep -v "^@" *marked.sam > "$(echo ${i} | sed 's/.sam/.norg.sam/')"
+echo ${i} | sed 's/.sam/.norg.sam/'
+done
+
