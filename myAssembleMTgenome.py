@@ -425,7 +425,7 @@ dass={}
 sam_handle = basext+'.sam'
 mt_table_handle = tablefile
 
-sam_file = open(basext+'.sam', 'r')
+sam_file = open(basext+'.norg.sam', 'r') #Tina: open the file with no read group
 mt_table = open(tablefile, 'r').readlines()
 mut_events = mtvcf_main_analysis(mt_table, sam_file, sample_name, tail=tail)
 if os.path.exists('../VCF_dict_tmp'):

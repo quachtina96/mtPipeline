@@ -80,7 +80,7 @@ INPUT="${i}" \
 OUTPUT="$markedSam" \
 TMP_DIR="`pwd`/tmp";
 #commented out the following command (originally from MtoolBox, since it gave me errors during future bam analysis)
-#grep -v "^@" *marked.sam > ${i}.OUT2.sam
+grep -v "^@" *marked.sam > "$(echo ${i} | sed 's/.sam/norg.sam/')"
 done
 
 #commented out the follwing section because I wanted to keep viewing the files while testing.

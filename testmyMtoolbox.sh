@@ -27,8 +27,8 @@ echo ""
 echo "WARNING: values of tail < 5 are deprecated and will be replaced with 5"
 echo ""	
 #for each directory labeled as an output, 
-for i in $(ls *ID18_Father_exome_mtExtractremap.csort.rgmtRmCsort.realigned.marked.bam); do 
-outhandle=$(echo ${i} | sed 's/_exome_mtExtractremap.csort.bam.rgmtRmCsort.realigned.marked.bam//g')mtDNAassembly; 
+for i in $(ls *rg.ra.marked.bam); do 
+outhandle=$(echo ${i} | sed 's/.rg.ra.marked.bam//g')-mtDNAassembly; 
 echo $outhandle
 python /gpfs/home/quacht/toolbox/myAssembleMTgenome.py \
 -i ${i} \
@@ -43,3 +43,4 @@ echo ""
 echo "##### GENERATING VCF OUTPUT..."
 # ... AND VCF OUTPUT
 python VCFoutput.py -r ${ref}
+
