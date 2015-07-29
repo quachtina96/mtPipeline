@@ -48,5 +48,5 @@ done > logassemble.txt
 echo ""
 echo "##### GENERATING VCF OUTPUT..."
 # ... AND VCF OUTPUT
-python VCFoutput.py -r ${ref}
+python /gpfs/home/quacht/scripts/VCFoutput.py -r ${ref}
 
