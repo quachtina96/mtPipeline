@@ -65,10 +65,10 @@ except getopt.GetoptError, err:
 	print str(err) 
 	usage()
 	sys.exit()
-fasta_dir="/gpfs/home/quacht/data" #changed
+fasta_dir="/gpfs/home/quacht/data/" #changed
 mtdna_fasta='chrRCRS.fa'
 inputfile=''
-hgenome_fasta="$bundle/ucsc.hg19.fasta" #changed
+hgenome_fasta="/gpfs/group/stsi/genomes/GATK_bundle/hg19/ucsc.hg19.fasta" #changed
 mqual=25
 clev=0.80
 cov=5
