@@ -53,8 +53,23 @@ java -Xmx4g \
 -o "${sampleName}.rg.ra.bam" \
 -targetIntervals ${mtoolbox_folder}data/intervals_file_RCRS.list \
 -known ${mtoolbox_folder}data/MITOMAP_HMTDB_known_indels_RCRS.vcf \
--compress 0;done
+-compress 0;
 
-for i in $(ls *bam);
-do samtools view -h $i > ${i}.sam
+echo ""
+echo "##### ELIMINATING PCR DUPLICATES WITH PICARDTOOLS MARKDUPLICATES..."
+echo "" 
+java -Xmx4g \
+-Djava.io.tmpdir="$(pwd)/tmp" \
+-jar /opt/applications/picard/current/MarkDuplicates.jar \
+INPUT="${sampleName}.rg.ra.bam" \
+OUTPUT="${sampleName}.rg.ra.marked.bam" \
+METRICS_FILE="${sampleName}-metrics.txt" \
+ASSUME_SORTED=true \
+REMOVE_DUPLICATES=true \
+TMP_DIR=`pwd`/tmp; done
+
+for i in $(ls *bam); do
+echo $i 
+samtools view -h $i > ${i}.sam
 done
+
