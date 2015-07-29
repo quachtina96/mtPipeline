@@ -53,4 +53,8 @@ java -Xmx4g \
 -o "${sampleName}.rg.ra.bam" \
 -targetIntervals ${mtoolbox_folder}data/intervals_file_RCRS.list \
 -known ${mtoolbox_folder}data/MITOMAP_HMTDB_known_indels_RCRS.vcf \
--compress 0;
+-compress 0;done
+
+for i in $(ls *bam);
+do samtools view -h $i > ${i}.sam
+done

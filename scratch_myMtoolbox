@@ -1,0 +1,61 @@
+
+echo ""
+echo "##### ELIMINATING PCR DUPLICATES WITH PICARDTOOLS MARKDUPLICATES..."
+echo "" 
+java -Xmx4g \
+-Djava.io.tmpdir="$(pwd)/tmp" \
+-jar /opt/applications/picard/current/MarkDuplicates.jar \
+INPUT="${sampleName}.rg.ra.bam" \
+OUTPUT="${sampleName}.rg.ra.marked.bam" \
+METRICS_FILE="${sampleName}-metrics.txt" \
+ASSUME_SORTED=true \
+REMOVE_DUPLICATES=true \
+TMP_DIR=`pwd`/tmp; done
+
+
+for i in $(ls *rg.ra.marked.bam); do
+echo "Converting ${i} to sam file..."
+markedSam="$(echo ${i} | sed 's/.bam/.sam/')"
+echo "this is the output: ${markedSam}"
+java -Xmx4g \
+-Djava.io.tmpdir=`pwd`/tmp \
+-jar ${externaltoolsfolder}SamFormatConverter.jar \
+INPUT="${i}" \
+OUTPUT="$markedSam" \
+TMP_DIR="`pwd`/tmp";
+#commented out the following command (originally from MtoolBox, since it gave me errors during future bam analysis)
+grep -v "^@" *marked.sam > "$(echo ${i} | sed 's/.sam/.norg.sam/')"
+echo ${i} | sed 's/.sam/.norg.sam/'
+done
+
+#commented out the follwing section because I wanted to keep viewing the files while testing.
+#mkdir MarkTmp
+#mv *.ra.bam MarkTmp
+#mv *.ra.marked.bam MarkTmp
+#mv *marked.bam.marked.sam MarkTmp
+#tar -czf MarkTmp.tar.gz MarkTmp
+#rm -R MarkTmp
+
+# ASSEMBLE CONTIGS, GET MT-TABLES...
+echo ""
+echo "##### ASSEMBLING MT GENOMES WITH ASSEMBLEMTGENOME..."
+echo ""
+echo "WARNING: values of tail < 5 are deprecated and will be replaced with 5"
+echo ""	
+#for each directory labeled as an output, 
+for i in $(ls *rg.ra.marked.bam); do 
+outhandle=$(echo ${i} | sed 's/.rg.ra.marked.sam//g')-mtDNAassembly; 
+echo $outhandle
+python /gpfs/home/quacht/toolbox/myAssembleMTgenome.py \
+-i ${i} \
+-o ${outhandle} \
+-r ${fasta_path} \
+-f ${mtdb_fasta} \
+-a ${hg19_fasta} \
+-s ${samtoolsexe} \
+-FCP #${assembleMTgenome_OPTS}
+done > logassemble.txt
+echo ""
+echo "##### GENERATING VCF OUTPUT..."
+# ... AND VCF OUTPUT
+python VCFoutput.py -r ${ref}
