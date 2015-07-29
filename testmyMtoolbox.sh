@@ -18,7 +18,12 @@ mtdb_fasta=chr${ref}.fa
 hg19_fasta=/gpfs/group/stsi/genomes/GATK_bundle/hg19/ucsc.hg19.fasta 
 samtoolsexe=/gpfs/group/stsi/methods/variant_calling/bwa_GATK/bin/samtools
 
-cd /gpfs/home/quacht/test_myMtoolbox_ID18Father/tryMarkedBam
+cd /gpfs/home/quacht/toolbox1.0
+currentDir=$(pwd)
+echo $currentDir
+i=ID18_Father.rg.ra.marked.sam
+grep -v "^@"  *marked.sam > "$(echo ${i} | sed 's/.sam/.norg.sam/')"
+echo ${i} | sed 's/.sam/.norg.sam/'
 
 # ASSEMBLE CONTIGS, GET MT-TABLES...
 echo ""

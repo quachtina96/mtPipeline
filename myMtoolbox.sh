@@ -2,7 +2,7 @@
 set -e
 set -o pipefail
 
-cd /gpfs/home/quacht/test_myMtoolbox_ID18Father/
+cd /gpfs/home/quacht/toolbox2.0
 module load samtools
 module load python
 module load bwa
@@ -80,7 +80,8 @@ INPUT="${i}" \
 OUTPUT="$markedSam" \
 TMP_DIR="`pwd`/tmp";
 #commented out the following command (originally from MtoolBox, since it gave me errors during future bam analysis)
-grep -v "^@" *marked.sam > "$(echo ${i} | sed 's/.sam/norg.sam/')"
+grep -v "^@" *marked.sam > "$(echo ${i} | sed 's/.sam/.norg.sam/')"
+echo ${i} | sed 's/.sam/.norg.sam/'
 done
 
 #commented out the follwing section because I wanted to keep viewing the files while testing.
@@ -99,7 +100,7 @@ echo "WARNING: values of tail < 5 are deprecated and will be replaced with 5"
 echo ""	
 #for each directory labeled as an output, 
 for i in $(ls *rg.ra.marked.bam); do 
-outhandle=$(echo ${i} | sed 's/.rg.ra.marked.bam//g')-mtDNAassembly; 
+outhandle=$(echo ${i} | sed 's/.rg.ra.marked.sam//g')-mtDNAassembly; 
 echo $outhandle
 python /gpfs/home/quacht/toolbox/myAssembleMTgenome.py \
 -i ${i} \
