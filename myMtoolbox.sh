@@ -88,3 +88,4 @@ grep -v "^@" *marked.sam > "$(echo ${i} | sed 's/.sam/.norg.sam/')"
 echo ${i} | sed 's/.sam/.norg.sam/'
 done
 
+
