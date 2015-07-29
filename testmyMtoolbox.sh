@@ -22,29 +22,6 @@ cd /gpfs/home/quacht/toolbox1.0
 currentDir=$(pwd)
 echo $currentDir
 
-i=ID18_Father.rg.ra.marked.sam
-grep -v "^@"  *marked.sam > "$(echo ${i} | sed 's/.sam/.norg.sam/')"
-echo ${i} | sed 's/.sam/.norg.sam/'
-
-# ASSEMBLE CONTIGS, GET MT-TABLES...
-echo ""
-echo "##### ASSEMBLING MT GENOMES WITH ASSEMBLEMTGENOME..."
-echo ""
-echo "WARNING: values of tail < 5 are deprecated and will be replaced with 5"
-echo ""	
-#for each directory labeled as an output, 
-for i in $(ls *rg.ra.marked.bam); do 
-outhandle=$(echo ${i} | sed 's/.rg.ra.marked.bam//g')-mtDNAassembly; 
-echo $outhandle
-python /gpfs/home/quacht/scripts/myAssembleMTgenome.py \
--i ${i} \
--o ${outhandle} \
--r ${fasta_path} \
--f ${mtdb_fasta} \
--a ${hg19_fasta} \
--s ${samtoolsexe} \
--FCP #${assembleMTgenome_OPTS}
-done > logassemble.txt
 echo ""
 echo "##### GENERATING VCF OUTPUT..."
 # ... AND VCF OUTPUT

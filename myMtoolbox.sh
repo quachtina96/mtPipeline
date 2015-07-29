@@ -3,6 +3,7 @@ set -e
 set -o pipefail
 
 cd /gpfs/home/quacht/checkMarkedDup
+
 module load samtools
 module load python
 module load bwa
@@ -74,8 +75,33 @@ samtools view -h $i > ${i}.sam
 done
 
 for i in $(ls *marked.bam.sam); do
+
 grep -v "^@" $i > "$(echo ${i} | sed 's/.sam/.norg.sam/')"
 echo ${i} | sed 's/.sam/.norg.sam/'
 done
+
+# ASSEMBLE CONTIGS, GET MT-TABLES...
+echo ""
+echo "##### ASSEMBLING MT GENOMES WITH ASSEMBLEMTGENOME..."
+echo ""
+echo "WARNING: values of tail < 5 are deprecated and will be replaced with 5"
+echo ""	
+#for each directory labeled as an output, 
+for i in $(ls *rg.ra.marked.bam); do 
+outhandle=$(echo ${i} | sed 's/.rg.ra.marked.bam//g')-mtDNAassembly; 
+echo $outhandle
+python /gpfs/home/quacht/scripts/myAssembleMTgenome.py \
+-i ${i} \
+-o ${outhandle} \
+-r ${fasta_path} \
+-f ${mtdb_fasta} \
+-a ${hg19_fasta} \
+-s ${samtoolsexe} \
+-FCP #${assembleMTgenome_OPTS}
+done > logassemble.txt
+echo ""
+echo "##### GENERATING VCF OUTPUT..."
+# ... AND VCF OUTPUT
+python /gpfs/home/quacht/scripts/VCFoutput.py -r ${ref}
 
 
