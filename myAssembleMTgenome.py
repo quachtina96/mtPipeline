@@ -66,7 +66,7 @@ except getopt.GetoptError, err:
 	usage()
 	sys.exit()
 fasta_dir="/gpfs/home/quacht/data/" #changed
-mtdna_fasta='chrRCRS.fa'
+mtdna_fasta="chrRCRS.fa"
 inputfile=''
 hgenome_fasta="/gpfs/group/stsi/genomes/GATK_bundle/hg19/ucsc.hg19.fasta" #changed
 mqual=25
@@ -231,6 +231,7 @@ if ext=='bam':
 	os.system(cmd2)
 	print 'Creating pileup...'
 	cmd3='%s mpileup -B -f %s %s-sorted.bam > %s.pileup' %(sexe,mtdnafile,basext,basext)
+	print cmd3
 	os.system(cmd3)
 
 #Tina: I stopped here	

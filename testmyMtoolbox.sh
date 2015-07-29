@@ -14,7 +14,7 @@ mtoolbox_folder=/gpfs/home/quacht/MToolBox/
 externaltoolsfolder=/gpfs/home/quacht/MToolBox/ext_tools/
 ref="RCRS"
 fasta_path=/gpfs/home/quacht/data/ 
-mtdb_fasta=chr${ref}.fa 
+mtdb_fasta=chrRCRS.fa 
 hg19_fasta=/gpfs/group/stsi/genomes/GATK_bundle/hg19/ucsc.hg19.fasta 
 samtoolsexe=/gpfs/group/stsi/methods/variant_calling/bwa_GATK/bin/samtools
 
@@ -36,7 +36,7 @@ echo ""
 for i in $(ls *rg.ra.marked.bam); do 
 outhandle=$(echo ${i} | sed 's/.rg.ra.marked.bam//g')-mtDNAassembly; 
 echo $outhandle
-python /gpfs/home/quacht/toolbox/myAssembleMTgenome.py \
+python /gpfs/home/quacht/scripts/myAssembleMTgenome.py \
 -i ${i} \
 -o ${outhandle} \
 -r ${fasta_path} \
