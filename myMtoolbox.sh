@@ -99,6 +99,7 @@ python /gpfs/home/quacht/scripts/myAssembleMTgenome.py \
 -s ${samtoolsexe} \
 -FCP #${assembleMTgenome_OPTS}
 done > logassemble.txt
+
 echo ""
 echo "##### GENERATING VCF OUTPUT..."
 # ... AND VCF OUTPUT
