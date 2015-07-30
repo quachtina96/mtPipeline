@@ -23,7 +23,7 @@ samtoolsexe=/gpfs/group/stsi/methods/variant_calling/bwa_GATK/bin/samtools
 echo ""
 echo "##### REALIGNING KNOWN INDELS WITH GATK INDELREALIGNER..."
 echo ""
-for i in $(ls *ID18_Father_exome_mtExtractremap.csort.bam); do 
+for i in $(ls *_mtExtractremap.csort.bam); do 
 echo "Currently working with ${i}..."
 sampleName="$(echo ${i} | sed 's/_exome_mtExtractremap.csort.bam//')"
 echo "Adding read groups to the bam files";
@@ -76,8 +76,8 @@ done
 
 for i in $(ls *marked.bam.sam); do
 
-grep -v "^@" $i > "$(echo ${i} | sed 's/.sam/.norg.sam/')"
-echo ${i} | sed 's/.sam/.norg.sam/'
+grep -v "^@" $i > "$(echo ${i} | sed 's/.bam.sam/.norg.sam/')"
+echo ${i} | sed 's/.bam.sam/.norg.sam/'
 done
 
 # ASSEMBLE CONTIGS, GET MT-TABLES...
