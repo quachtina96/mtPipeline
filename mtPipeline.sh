@@ -35,7 +35,7 @@ usage()
 source /gpfs/home/quacht/scripts/parameters.sh
 #statements
 
-export mtPipeline=/gpfs/home/quacht/mtPipeline
+export mtPipelineScripts=/gpfs/home/quacht/scripts/
 export mtoolbox_folder=/gpfs/home/quacht/MToolBox/
 export externaltoolsfolder=/gpfs/home/quacht/MToolBox/ext_tools/
 export ref="RCRS"
@@ -90,20 +90,8 @@ echo "OK."
 echo ""
 fi
 
-in-out_folders()
-{ # create output folder and enter input folder
-	if [[ "${input_path}" ]]
-	then
-		cd "${input_path}"
-	fi
-	if [[ "${output_name}" ]]
-	then
-		mkdir ${output_name}
-	fi
-}
-
-
+cd "${input_path}"
 #python simplepipe.py -m ${mtPipeFolder} -i ${input_path} > log-simplepipe.txt
-python simplepipe.py -i ${input_path} > log-simplepipe.txt
-bash myMtoolbox.sh -i  ${input_path} > log-myMtoolbox.txt
+python ${mtPipelineScripts}simplepipe.py -i ${input_path} > log-simplepipe.txt
+bash ${mtPipelineScripts}myMtoolbox.sh -i  ${input_path} > log-myMtoolbox.txt
 

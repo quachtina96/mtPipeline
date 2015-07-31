@@ -53,7 +53,7 @@ echo "/partbam holds part.bam files and their indexes"
 
 echo ""
 mtExtract="${pathToSampleDir}/mtExtract/"
-mkDir $mtExtract
+mkdir $mtExtract
 mv *mtExtract* $mtExtract
 mv *mtExtractremap.pdf ${pathToSampleDir}
 echo "/mtExtract holds the bam/sam/fastq files resulting from coverage analysis"
