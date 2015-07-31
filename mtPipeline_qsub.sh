@@ -10,30 +10,4 @@ mtPipeScripts="${mtPipeline}scripts/"
 #path to the directory that holds the sample directories within (e.g. ID18 holds ID18_Father, ID18_Mother, and ID18_Proband)
 pathToSampleDirs=/gpfs/home/quacht/ID18/
 
-cd $pathToSampleDirs
-pwd
-
-for sampleDir in $(ls); do
-#run the analysis on single sample
-echo "Working with $sampleDir"
-pathToSampleDir="${pathToSampleDirs}${sampleDir}"
-bash "${mtPipeScripts}mtPipeline.sh" -i "${pathToSampleDir}"
-pwd
-
-#clean up the sample directory
-echo "############ ORGANIZING OUTPUTS ##############"
-bash "${mtPipeScripts}cleanUp.sh" -i "${pathToSampleDir}"
-pwd
-
-#copy the vcf for that sample to a VCF folder for the sample set for future VCF analysis
-echo "############### COPY VCF ###############3#"
-cd $pathToSampleDirs
-pwd
-if [ ! -d "${pathToSampleDirs}VCF" ] ; then
-	 mkdir "${pathToSampleDirs}VCF"
-fi
-cd $pathToSampleDir
-cp *.vcf "${pathToSampleDirs}VCF"
-cd $pathToSampleDirs
-echo "Job complete."
-done
+bash "${mtPipeScripts}mtPipeline.sh" -i "${pathToSampleDirs}"
