@@ -4,42 +4,26 @@ mtPipeline=/gpfs/home/quacht/
 mtPipeScripts="${mtPipeline}scripts/"
 pathToSampleDirs=/gpfs/home/quacht/ID18/
 
-
+cd $pathToSampleDirs
+pwd
 for sampleDir in $(ls); do
 
+echo "Working with $sampleDir"
 pathToSampleDir="${pathToSampleDirs}${sampleDir}"
-bash "${mtPipeScripts}mtPipeline.sh" -i "${pathToSampleDirs}${sampleDir}"
+bash "${mtPipeScripts}mtPipeline.sh" -i "${pathToSampleDir}"
+pwd
 
 echo "############ ORGANIZING OUTPUTS ##############"
+bash "${mtPipeScripts}cleanUp.sh" -i ${pathToSampleDir}
+pwd
 
-cd ${pathToSampleDir}
-partBamDir="${pathToSampleDir}/partbam/"
-mkdir $partBamDir
-mv *part.bam $partBamDir
-mv *part.bam.bai $partBamDir
-echo "/partbam holds part.bam files and their indexes"
+echo "############### COPY VCF ###############3#"
+cd $pathToSampleDirs
+if [ ! -d "${pathToSampleDirs}VCF" ] ; then
+	 mkdir "${pathToSampleDirs}VCF"
+fi
 
-echo ""
-mtExtract="${pathToSampleDir}/mtExtract/"
-mkDir $mtExtract
-mv *mtExtract* $mtExtract
-mv *mtExtractremap.pdf ${pathToSampleDir}
-echo "/mtExtract holds the bam/sam/fastq files resulting from coverage analysis"
+cp *.vcf "${pathToSampleDirs}VCF"
 
-echo ""
-myMtoolbox_out="$pathToSampleDir/myMtoolbox_out"
-mkdir $myMtoolbox_out
-mv *.rg.* $myMtoolbox_out 
-echo "/myMtoolbox_out holds the bam/sam outputs of the indel realignment and marking of duplicates"
-
-echo ""
-
-
-
-
-
-
-
-
-
+echo "Job complete."
 done
