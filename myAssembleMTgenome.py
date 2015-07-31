@@ -122,9 +122,8 @@ print mtdnafile
 print hgenome
 
 #the following works for a directory labeld ID18_Father
-#sample_name = os.getcwd().split('/')[-1].split('_')[0:1] 
-#the following works for test directory
-sample_name = str(os.getcwd().split('/')[-1].split('_')[-1])
+sample_name = os.getcwd().split('/')[-1].split('_')[0:1] 
+
 print "assembleMTgenome for sample", sample_name
 
 if not os.path.exists(mtdnafile):

@@ -2,7 +2,7 @@
 set -e
 set -o pipefail
 
-cd /gpfs/home/quacht/checkMarkedDup
+cd /gpfs/home/quacht/ID18_Father
 
 module load samtools
 module load python
@@ -69,8 +69,7 @@ ASSUME_SORTED=true \
 REMOVE_DUPLICATES=true \
 TMP_DIR=`pwd`/tmp; done
 
-for i in $(ls *bam); do
-echo $i 
+for i in $(ls *marked.bam); do
 samtools view -h $i > ${i}.sam
 done
 
