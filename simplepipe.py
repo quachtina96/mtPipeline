@@ -7,32 +7,63 @@ import subprocess as sp
 import os
 import sys
 import numpy
-os.chdir("/gpfs/home/quacht/scripts")
+import getopt
+
+def usage():
+	print """Merging exome.part.bam files extracting mtDNA and analyzing coverage.
+Version 1 Written by Tina Quach, 2015
+
+Options:
+	-m      path to mtPipeline directory (include last "/")
+	-i 		input folder (e.g. ID18_Father)
+	-h      view usage
+	"""
+
+#ALLOW THE SCRIPT TO TAKE IN PARAMETERS
+try:
+	opts, args = getopt.getopt(sys.argv[1:], "m:i:")
+except getopt.GetoptError, err:
+	print str(err) 
+	usage()
+	sys.exit()
+
+#default path
+mtPipeDir = "/gpfs/home/quacht/scripts/" 
+sampleDIr =""
+
+#read in options
+for o,a in opts:
+	if o == "-h":
+		usage()
+		sys.exit()
+	elif o == "-m": mtPipeDir = a
+	elif o == "-i": sampleDir = a
+	else:
+		assert False, "Unhandled option."
+
+scriptsDir=str((str(mtPipeDir)+"scripts"))
+os.chdir(scriptsDir)
 import pipeFunctions as pf
 
 # path to sample directory
-path = "/gpfs/home/quacht/testWholeCovPipe/ID18_Father"
-depths = []
-
+path = str(sampleDir)
 os.chdir(path)
 print "Current directory: " + os.getcwd()
 # get the name of sample directory as the name of the sample
+sampleName = path.strip().split("/")[-1]
+print "Working with sample: sampleName + "
+print ""
 
 # MERGE THE PART.BAM FILES
-sampleName = path.strip().split("/")[-1]
-print sampleName + " is the sample name"
-print ""
 parts = []
 # go through all the files in the folder, designated by path
 for subdir, dirs, files in os.walk(path):
-	for file in files:  # for each file
-		# if the file is a bam file (not the index)
+	for file in files:  
 		if (file.find(".bai") == -1):
 			if (file.find(str(sampleName)) != -1):
 				parts.append(str(file))
 mergeArgs = " ".join(parts)
 mergedBam = sampleName + "_exome.bam"
-# create the command string
 command = "samtools merge " + mergedBam + \
 	" " + mergeArgs
 print command
@@ -46,10 +77,8 @@ print sampleName + " part.bam files merged."
 print mergedBam + " created."
 
 # GET DEPTH OF chrM REGION & EXTRACT THE MTDNA
-# go through all the files in the folder, designated by path
 for subdir, dirs, files in os.walk(path):
-	for file in files:  # for each file
-		filepath = os.path.join(subdir, file)  # get the file path
+	for file in files:  
 		if (file.endswith("exome.bam")):
 			print "Currently working with " + str(file)
 			print "Indexing file..."
