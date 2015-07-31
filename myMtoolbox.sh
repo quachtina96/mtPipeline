@@ -2,24 +2,54 @@
 set -e
 set -o pipefail
 
-cd /gpfs/home/quacht/ID18_Father
+usage()
+{
+	USAGE="""
+	myMtoolbox.sh is a script that incorporates code from MToolBox's mitchondrial genome analysis pipeline for variant calling. 
+	Written by Tina Quach, incorporating code from MToolBox (written by Domenico Simone, Claudia Calabrese and Maria Angela Diroma 2013-2014).
+	
+	Mandatory input options:
 
-module load samtools
-module load python
-module load bwa
-module load bedtools
-module load R
-module load java/1.7.0_21  
-	#statements
-mtoolbox_folder=/gpfs/home/quacht/MToolBox/
-externaltoolsfolder=/gpfs/home/quacht/MToolBox/ext_tools/
-ref="RCRS"
-fasta_path=${mtoolbox_folder}data/ #might be something wrong here
-mtdb_fasta=chr${ref}.fa 
-hg19_fasta=/gpfs/group/stsi/genomes/GATK_bundle/hg19/ucsc.hg19.fasta 
-samtoolsexe=/gpfs/group/stsi/methods/variant_calling/bwa_GATK/bin/samtools
+		-i	path to input folder.
+		-m  path to mtPipeline folder.
 
-#pwd and cd to correct folder
+	Help options:
+
+		-h	view usage
+
+	"""
+	echo "$USAGE"
+}
+
+mtPipeFolder=""
+sampleDir=""
+
+while getopts ":h:a:c:p:o" opt; do 
+	case $opt in
+		h)
+			usage
+			exit 1
+			;;
+		i)
+			sampleDir=$OPTARG
+			;;
+		m)
+			mtPipeFolder=$OPTARG	
+
+		\?)
+			echo "Invalid option: -$OPTARG" >&2
+			exit 1
+			;;
+		:)
+			echo "Option -$OPTARG requires an argument." >&2
+			exit 1
+			;;
+	esac
+done
+
+cd $sampleDir
+echo "Currently working in $sampleDir"
+
 echo ""
 echo "##### REALIGNING KNOWN INDELS WITH GATK INDELREALIGNER..."
 echo ""
