@@ -28,7 +28,7 @@ except getopt.GetoptError, err:
 	sys.exit()
 
 #default path
-mtPipeDir = "/gpfs/home/quacht/scripts/" 
+mtPipeDir = "/gpfs/home/quacht/" 
 sampleDIr =""
 
 #read in options
@@ -51,7 +51,7 @@ os.chdir(path)
 print "Current directory: " + os.getcwd()
 # get the name of sample directory as the name of the sample
 sampleName = path.strip().split("/")[-1]
-print "Working with sample: sampleName + "
+print "Working with sample: " + sampleName  
 print ""
 
 # MERGE THE PART.BAM FILES

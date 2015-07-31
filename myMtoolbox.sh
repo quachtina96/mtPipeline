@@ -2,6 +2,17 @@
 set -e
 set -o pipefail
 
+source parameters.sh
+
+export mtPipeFolder=/gpfs/home/quacht/mtPipeline
+export mtoolbox_folder=/gpfs/home/quacht/MToolBox/
+export externaltoolsfolder=/gpfs/home/quacht/MToolBox/ext_tools/
+export ref="RCRS"
+export fasta_path=${mtoolbox_folder}data/ #might be something wrong here
+export mtdb_fasta=chr${ref}.fa 
+export hg19_fasta=/gpfs/group/stsi/genomes/GATK_bundle/hg19/ucsc.hg19.fasta 
+export samtoolsexe=/gpfs/group/stsi/methods/variant_calling/bwa_GATK/bin/samtools
+
 usage()
 {
 	USAGE="""
@@ -21,10 +32,9 @@ usage()
 	echo "$USAGE"
 }
 
-mtPipeFolder=""
 sampleDir=""
 
-while getopts ":h:a:c:p:o" opt; do 
+while getopts ":h:i:m" opt; do 
 	case $opt in
 		h)
 			usage
@@ -34,8 +44,8 @@ while getopts ":h:a:c:p:o" opt; do
 			sampleDir=$OPTARG
 			;;
 		m)
-			mtPipeFolder=$OPTARG	
-
+			mtPipeFolder=$OPTARG
+			;;
 		\?)
 			echo "Invalid option: -$OPTARG" >&2
 			exit 1
