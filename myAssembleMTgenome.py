@@ -122,7 +122,7 @@ print mtdnafile
 print hgenome
 
 #the following works for a directory labeld ID18_Father
-sample_name = os.getcwd().split('/')[-1].split('_')[0:1] 
+sample_name = os.getcwd().split('/')[-1]
 
 print "assembleMTgenome for sample", sample_name
 
@@ -428,7 +428,7 @@ mt_table_handle = tablefile
 sam_file = open(basext+'.norg.sam', 'r') #Tina: open the file with no read group
 print "the samfile oging into the mtvcf main analysis fucntion is %s" %sam_file 
 mt_table = open(tablefile, 'r').readlines()
-mut_events = mtvcf_main_analysis(mt_table, sam_file, sample_name, tail=tail)
+mut_events = mtvcf_main_analysis(mt_table, sam_file, str(sample_name), tail=tail)
 if os.path.exists('VCF_dict_tmp'):
 	VCF_dict = ast.literal_eval(open('VCF_dict_tmp', 'r').read()) # global VCF dict
 else:
