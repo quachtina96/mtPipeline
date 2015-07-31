@@ -52,9 +52,9 @@ mv *part.bam.bai $partBamDir
 echo "/partbam holds part.bam files and their indexes"
 
 echo ""
-mtExtract="${pathToSampleDir}/mtExtract/"
-mkdir $mtExtract
-mv *mtExtract* $mtExtract
+mtExtractDir="${pathToSampleDir}/chrM/"
+mkdir $mtExtractDir
+mv *mtExtract* $mtExtractDir
 mv *mtExtractremap.pdf ${pathToSampleDir}
 echo "/mtExtract holds the bam/sam/fastq files resulting from coverage analysis"
 

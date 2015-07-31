@@ -28,10 +28,12 @@ pwd
 #copy the vcf for that sample to a VCF folder for the sample set for future VCF analysis
 echo "############### COPY VCF ###############3#"
 cd $pathToSampleDirs
+pwd
 if [ ! -d "${pathToSampleDirs}VCF" ] ; then
 	 mkdir "${pathToSampleDirs}VCF"
 fi
+cd $pathToSampleDir
 cp *.vcf "${pathToSampleDirs}VCF"
-
+cd $pathToSampleDirs
 echo "Job complete."
 done

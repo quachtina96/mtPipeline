@@ -426,7 +426,6 @@ sam_handle = basext+'.sam'
 mt_table_handle = tablefile
 
 sam_file = open(basext+'.norg.sam', 'r') #Tina: open the file with no read group
-print "the samfile oging into the mtvcf main analysis fucntion is %s" %sam_file 
 mt_table = open(tablefile, 'r').readlines()
 mut_events = mtvcf_main_analysis(mt_table, sam_file, str(sample_name), tail=tail)
 if os.path.exists('VCF_dict_tmp'):
