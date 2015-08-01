@@ -55,6 +55,7 @@ echo ""
 mtExtractDir="${pathToSampleDir}/chrM/"
 mkdir $mtExtractDir
 mv *mtExtract* $mtExtractDir
+cd $mtExtractDir
 mv *mtExtractremap.pdf ${pathToSampleDir}
 echo "/mtExtract holds the bam/sam/fastq files resulting from coverage analysis"
 

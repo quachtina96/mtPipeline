@@ -96,7 +96,7 @@ mtPipelineScripts="${mtPipeFolder}scripts/"
 cd "$pathToSampleDirs"
 pwd
 
-for sampleDir in $(ls); do
+for sampleDir in *; do
 #run the analysis on single sample
 echo "Working with $sampleDir"
 pathToSampleDir="${pathToSampleDirs}${sampleDir}"
@@ -120,8 +120,23 @@ if [ ! -d "${pathToSampleDirs}VCF" ] ; then
 fi
 cd $pathToSampleDir
 cp *.vcf "${pathToSampleDirs}VCF"
-cd $pathToSampleDirs
-echo "Job complete."
+
+cd "${pathToSampleDirs}VCF"
+
+VCFarray=(*vcf)
+echo "${VCFarray[0]}"
+echo "${VCFarray[1]}"
+echo "${VCFarray[2]}"
+
+java -jar GenomeAnalysisTK.jar \
+   -T CombineVariants \
+   -R chrRCRS.fa \
+   --variant "${VCFarray[0]}" \
+   --variant "${VCFarray[1]}" \
+   --variant "${VCFarray[2]}" \
+      -o combined.vcf \
+   -genotypeMergeOptions UNIQUIFY
+
 done
 
 
