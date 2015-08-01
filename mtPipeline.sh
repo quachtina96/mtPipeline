@@ -3,6 +3,7 @@ set -e
 set -o pipefail
 
 #NOTE: THIS HAS BEEN WRITTEN AS IF I WILL HAVE EVERYTHING RELEVANT PACKAGED INTO A MTPIPELINE FOLDER LIKE MTOOLBOX
+startTime=
 usage()
 {
 	USAGE="""
@@ -90,6 +91,7 @@ echo "OK."
 echo ""
 fi
 
+mtPipelineScripts="${mtPipeFolder}scripts/"
 
 cd "$pathToSampleDirs"
 pwd
@@ -106,11 +108,11 @@ bash ${mtPipelineScripts}myMtoolbox.sh -i  ${pathToSampleDir} > log-myMtoolbox.t
 
 #clean up the sample directory
 echo "############ ORGANIZING OUTPUTS ##############"
-bash "${mtPipeScripts}cleanUp.sh" -i "${pathToSampleDir}"
+bash "${mtPipelineScripts}cleanUp.sh" -i "${pathToSampleDir}"
 pwd
 
 #copy the vcf for that sample to a VCF folder for the sample set for future VCF analysis
-echo "############### COPY VCF ###############3#"
+echo "############### COPY VCF ###############"
 cd $pathToSampleDirs
 pwd
 if [ ! -d "${pathToSampleDirs}VCF" ] ; then

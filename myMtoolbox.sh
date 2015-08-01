@@ -64,12 +64,12 @@ echo "Currently working in $sampleDir"
 echo ""
 echo "##### REALIGNING KNOWN INDELS WITH GATK INDELREALIGNER..."
 echo ""
-for i in $(ls *_mtExtractremap.csort.bam); do 
+for i in *_mtExtractremap.csort.bam; do 
 echo "Currently working with ${i}..."
-sampleName="$(echo ${i} | sed 's/_exome_mtExtractremap.csort.bam//')"
+sampleName="${i//_exome_mtExtractremap.csort.bam/}"
 echo "Adding read groups to the bam files";
 java -Xmx2g \
--Djava.io.tmpdir=`pwd`/tmp \
+-Djava.io.tmpdir=$(pwd)/tmp \
 -jar /opt/applications/picard/current/AddOrReplaceReadGroups.jar \
 INPUT="${i}" \
 OUTPUT="${sampleName}.rg.bam" \
@@ -83,9 +83,7 @@ RGSM="${sampleName}_L00" ;
 echo "..."
 samtools index "${sampleName}.rg.bam"
 
-#java -jar /opt/applications/picard/current/CreateSequenceDictionary.jar R=/gpfs/home/quacht/ID18exome/rCRS.fasta O=/gpfs/home/quacht/ID18exome/rCRS.dict
-
-echo "Realigning known indels for file ${i} using ${mtoolbox_folder} data/MITOMAP_HMTDB_known_indels.vcf as reference..."
+echo "Realigning known indels for file ${i} using ${mtoolbox_folder}data/MITOMAP_HMTDB_known_indels.vcf as reference..."
 java -Xmx4g \
 -Djava.io.tmpdir=`pwd`/tmp \
 -jar /opt/applications/gatk/3.3-0/GenomeAnalysisTK.jar \
@@ -108,26 +106,27 @@ OUTPUT="${sampleName}.rg.ra.marked.bam" \
 METRICS_FILE="${sampleName}-metrics.txt" \
 ASSUME_SORTED=true \
 REMOVE_DUPLICATES=true \
-TMP_DIR=`pwd`/tmp; done
+TMP_DIR=$(pwd)/tmp; done
 
-for i in $(ls *marked.bam); do
+#Convert the marked.bam file to sam file for later processing (in  myAssembleMTgenome.py)
+for i in *marked.bam; do
 samtools view -h $i > ${i}.sam
 done
 
-for i in $(ls *marked.bam.sam); do
+for i in *marked.bam.sam; do
 
-grep -v "^@" $i > "$(echo ${i} | sed 's/.bam.sam/.norg.sam/')"
-echo ${i} | sed 's/.bam.sam/.norg.sam/'
+grep -v "^@" $i > "${i//.bam.sam/.norg.sam}"
+echo "${i//.bam.sam/.norg.sam}"
 done
 
 # ASSEMBLE CONTIGS, GET MT-TABLES...
 echo ""
-echo "##### ASSEMBLING MT GENOMES WITH ASSEMBLEMTGENOME..."
+echo "##### ASSEMBLING MT GENOMES WITH MYASSEMBLEMTGENOME..."
 echo ""
 echo "WARNING: values of tail < 5 are deprecated and will be replaced with 5"
 echo ""	
 #for each directory labeled as an output, 
-for i in $(ls *rg.ra.marked.bam); do 
+for i in *rg.ra.marked.bam; do 
 outhandle=$(echo ${i} | sed 's/.rg.ra.marked.bam//g')-mtDNAassembly; 
 echo $outhandle
 python /gpfs/home/quacht/scripts/myAssembleMTgenome.py \
@@ -141,7 +140,7 @@ python /gpfs/home/quacht/scripts/myAssembleMTgenome.py \
 done > logassemble.txt
 
 echo ""
-echo "##### GENERATING VCF OUTPUT..."
+echo "##### GENERATING VCF OUTPUT #############"
 # ... AND VCF OUTPUT
 python /gpfs/home/quacht/scripts/VCFoutput.py -r ${ref}
 

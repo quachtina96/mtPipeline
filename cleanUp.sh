@@ -20,7 +20,7 @@ USAGE="""This script takes in the path to a sample directory and organizes the '
 		Rplots.pdf
 		depth.txt
 		VCF_dict_tmp"""
-echo $USAGE
+echo "$USAGE"
 }
 
 pathToSampleDir=""

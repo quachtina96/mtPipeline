@@ -10,4 +10,4 @@ mtPipeScripts="${mtPipeline}scripts/"
 #path to the directory that holds the sample directories within (e.g. ID18 holds ID18_Father, ID18_Mother, and ID18_Proband)
 pathToSampleDirs=/gpfs/home/quacht/ID18/
 
-bash "${mtPipeScripts}mtPipeline.sh" -i "${pathToSampleDirs}"
+bash "${mtPipeScripts}mtPipeline.sh" -i "${pathToSampleDirs}" -m "${mtPipeline}"
