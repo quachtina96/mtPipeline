@@ -12,7 +12,7 @@ def usage():
 		"""
 
 reference_sequence="RCRS"
-sampleName=""
+sampleName="ID18_Father"
 
 try:
 	opts, args = getopt.getopt(sys.argv[1:], "h:r:s:")
@@ -28,12 +28,15 @@ for o,a in opts:
 		print "Sample Name is required"
 		sys.exit()
 
-
+print "Creating VCF for " + sampleName
 VCF_dict = ast.literal_eval(open('VCF_dict_tmp', 'r').read())
 VCFoutput(VCF_dict, reference=reference_sequence)
+
+
+#rename VCF_file.vcf to be specific to the sample
 currDir= os.getcwd()
-print currDir
-oldVCF = currDir+"\VCF_file.vcf"
-newVCF = currDir+"\\"+sampleName+"_VCF.vcf"
-os.rename(currDir+oldVCF, currDir+newVCF)
-print "Rename Executed"
+oldVCF = currDir+"/VCF_file.vcf"
+newVCF = currDir+"/"+sampleName+"_VCF.vcf"
+print newVCF + " is the VCF for " + sampleName
+os.rename(oldVCF, newVCF)
+
