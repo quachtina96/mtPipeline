@@ -32,6 +32,8 @@ for o,a in opts:
 VCF_dict = ast.literal_eval(open('VCF_dict_tmp', 'r').read())
 VCFoutput(VCF_dict, reference=reference_sequence)
 currDir= os.getcwd()
-oldVCF = "\VCF_file.vcf"
-newVCF = sampleName+"\_VCF.vcf"
+print currDir
+oldVCF = currDir+"\VCF_file.vcf"
+newVCF = currDir+"\\"+sampleName+"_VCF.vcf"
 os.rename(currDir+oldVCF, currDir+newVCF)
+print "Rename Executed"
