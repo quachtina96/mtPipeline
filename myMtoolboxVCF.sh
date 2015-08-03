@@ -2,6 +2,18 @@
 set -e
 set -o pipefail
 
+export mtPipeFolder=/gpfs/home/quacht/
+#export mtPipeFolder=/gpfs/home/quacht/mtPipeline/
+export mtoolbox_folder=/gpfs/home/quacht/MToolBox/
+export externaltoolsfolder=/gpfs/home/quacht/MToolBox/ext_tools/
+export ref="RCRS"
+export fasta_path=${mtoolbox_folder}data/ #might be something wrong here
+export mtdb_fasta=chr${ref}.fa 
+export hg19_fasta=/gpfs/group/stsi/genomes/GATK_bundle/hg19/ucsc.hg19.fasta 
+export samtoolsexe=/gpfs/group/stsi/methods/variant_calling/bwa_GATK/bin/samtools
+
+source "${mtPipeFolder}scripts/parameters.sh"
+
 usage()
 {
 	USAGE="""
@@ -11,6 +23,7 @@ usage()
 	Mandatory input options:
 
 		-i	path to input folder.
+		-m  path to mtPipeline folder.
 
 	Help options:
 
@@ -30,6 +43,9 @@ while getopts ":h:i:m" opt; do
 			;;
 		i)
 			sampleDir=$OPTARG
+			;;
+		m)
+			mtPipeFolder=$OPTARG
 			;;
 		\?)
 			echo "Invalid option: -$OPTARG" >&2
@@ -90,7 +106,7 @@ OUTPUT="${sampleName}.rg.ra.marked.bam" \
 METRICS_FILE="${sampleName}-metrics.txt" \
 ASSUME_SORTED=true \
 REMOVE_DUPLICATES=true \
-TMP_DIR=$(pwd)/tmp; done >> log.txt
+TMP_DIR=$(pwd)/tmp; done
 
 #Convert the marked.bam file to sam file for later processing (in  myAssembleMTgenome.py)
 for i in *marked.bam; do
@@ -126,7 +142,6 @@ done > logassemble.txt
 echo ""
 echo "##### GENERATING VCF OUTPUT #############"
 # ... AND VCF OUTPUT
-python /gpfs/home/quacht/scripts/VCFoutput.py -s $sampleName >> log.txt
-
+python /gpfs/home/quacht/scripts/VCFoutput.py -s $sampleName
 
 

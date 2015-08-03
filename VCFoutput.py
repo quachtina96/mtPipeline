@@ -12,7 +12,7 @@ def usage():
 		"""
 
 reference_sequence="RCRS"
-sampleName="ID18_Father"
+sampleName=""
 
 try:
 	opts, args = getopt.getopt(sys.argv[1:], "h:r:s:")

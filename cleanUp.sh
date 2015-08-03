@@ -6,9 +6,11 @@ set -o pipefail
 usage()
 {
 USAGE="""This script takes in the path to a sample directory and organizes the 'side products'
-		of mtPipeline.
+		of mtPipeline. Written by Tina Quach (2015).
 
-		-i option REQUIRED.
+		REQUIRED OPTION:
+		-i path to sample directory
+
 
 		Four directories are created in your sample directory:
 		1) partbam (contains all the part.bam and part.bam.bai files & the indexed exome.bam file that results from the merging of the parts)
@@ -79,6 +81,16 @@ mv *txt $results
 mv *pdf $results
 mv *vcf $results
 mv *contigs.fasta $results
-echo "/results holds the txt, pdf, and vcf outputs of pipeline for the sample"
+cd $myMtoolbox_out
+mv *pileup $results
+cd $pathToSampleDir
 
+echo "/results holds the txt, pdf, and pileup vcf outputs of pipeline for the sample"
 
+bamFolder = "${pathToSampleDir}/bam"
+mkdir $bamFolder
+mv $partBamDir $bamFolder
+mv $mtExtractDir $bamFolder
+mv myMtoolbox_out $bamFolder
+
+echo "/bam holds the following directories: partbam, chrM, and myMtoolbox_out"

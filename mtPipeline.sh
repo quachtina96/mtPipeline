@@ -3,7 +3,7 @@ set -e
 set -o pipefail
 
 #NOTE: THIS HAS BEEN WRITTEN AS IF I WILL HAVE EVERYTHING RELEVANT PACKAGED INTO A MTPIPELINE FOLDER LIKE MTOOLBOX
-startTime=
+
 usage()
 {
 	USAGE="""
@@ -20,10 +20,8 @@ usage()
 	Input & workflow execution options (must include -i and -m):
  
 		-i	path to input folder (containing sample directories).
-		-o	path to output folder.
-		-m  path to mtPipeline folder.
+		-p  path to parameters.sh
 		-a	options for assembleMTgenome script [see assembleMTgenome.py -h for details]
-		-c	options for mt-classifier script [see mt-classifier.py -h for details]
 
 	Help options:
 
@@ -33,20 +31,8 @@ usage()
 	echo "$USAGE"
 }
 
-source /gpfs/home/quacht/scripts/parameters.sh
-#statements
 
-export mtPipelineScripts=/gpfs/home/quacht/scripts/
-export mtoolbox_folder=/gpfs/home/quacht/MToolBox/
-export externaltoolsfolder=/gpfs/home/quacht/MToolBox/ext_tools/
-export ref="RCRS"
-export fasta_path=${mtoolbox_folder}data/ #might be something wrong here
-export mtdb_fasta=chr${ref}.fa 
-export hg19_fasta=/gpfs/group/stsi/genomes/GATK_bundle/hg19/ucsc.hg19.fasta 
-export samtoolsexe=/gpfs/group/stsi/methods/variant_calling/bwa_GATK/bin/samtools
-
-
-while getopts ":h:a:c:i:o:m:" opt; do 
+while getopts ":h:a:c:i:o:p:" opt; do 
 	case $opt in
 		h)
 			usage
@@ -61,11 +47,8 @@ while getopts ":h:a:c:i:o:m:" opt; do
 		i)
 			pathToSampleDirs=$OPTARG
 			;;
-		o)
-			output_name=$OPTARG
-			;;	
-		m)
-			mtPipeFolder=$OPTARG	
+		p)
+			pathToParameters=$OPTARG
 			;;
 		\?)
 			echo "Invalid option: -$OPTARG" >&2
@@ -77,6 +60,9 @@ while getopts ":h:a:c:i:o:m:" opt; do
 			;;
 	esac
 done
+
+
+source $pathToParameters
 
 echo ""
 echo "Check python version... (2.7 required)"
@@ -91,6 +77,7 @@ echo "OK."
 echo ""
 fi
 
+#here in case I remove the export?
 mtPipelineScripts="${mtPipeFolder}scripts/"
 
 cd "$pathToSampleDirs"
@@ -101,14 +88,14 @@ for sampleDir in *; do
 echo "Working with $sampleDir"
 pathToSampleDir="${pathToSampleDirs}${sampleDir}"
 #python simplepipe.py -m ${mtPipeFolder} -i ${pathToSampleDir} > log-simplepipe.txt
-python ${mtPipelineScripts}simplepipe.py -i ${pathToSampleDir} > log-simplepipe.txt
-bash ${mtPipelineScripts}myMtoolbox.sh -i  ${pathToSampleDir} > log-myMtoolbox.txt
+python ${mtPipelineScripts}simplepipe.py -i ${pathToSampleDir} >> log.txt
+bash ${mtPipelineScripts}myMtoolbox.sh -i  ${pathToSampleDir} >> log.txt
 
 
 
 #clean up the sample directory
 echo "############ ORGANIZING OUTPUTS ##############"
-bash "${mtPipelineScripts}cleanUp.sh" -i "${pathToSampleDir}"
+bash "${mtPipelineScripts}cleanUp.sh" -i "${pathToSampleDir}" >> log.txt
 pwd
 
 #copy the vcf for that sample to a VCF folder for the sample set for future VCF analysis
@@ -121,8 +108,20 @@ fi
 cd $pathToSampleDir
 cp *.vcf "${pathToSampleDirs}VCF"
 
-
 done
 
+cd "${pathToSampleDirs}VCF"
 
+VCFarray=(*vcf)
+echo "${VCFarray[0]}"
+echo "${VCFarray[1]}"
+echo "${VCFarray[2]}"
 
+java -jar GenomeAnalysisTK.jar \
+   -T CombineVariants \
+   -R chrRCRS.fa \
+   --variant "${VCFarray[0]}" \
+   --variant "${VCFarray[1]}" \
+   --variant "${VCFarray[2]}" \
+      -o combined.vcf \
+   -assumeIdentiticalSamples

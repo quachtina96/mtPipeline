@@ -20,9 +20,13 @@ picard=/opt/applications/picard/current/
 #MToolBox bundle
 mtoolbox_folder=/gpfs/home/quacht/MToolBox/
 externaltoolsfolder=/gpfs/home/quacht/MToolBox/ext_tools/
-fasta_path=${mtoolbox_folder}data/ #might be something wrong here
+fasta_path=${mtoolbox_folder}data/
+ref="RCRS"
 mtdb_fasta=chr${ref}.fa 
 hg19_fasta=/gpfs/group/stsi/genomes/GATK_bundle/hg19/ucsc.hg19.fasta 
-ref="RCRS"
+
+#mtPipeline
+mtPipelineFolder = /gpfs/home/quacht/
+mtPipelineScripts= ${mtPipelineFolder}scripts/
 
 

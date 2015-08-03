@@ -4,6 +4,7 @@
 Written by Ernesto Picardi - e.picardi@biologia.uniba.it
 Edited by Claudia Calabrese - claudia.calabrese23@gmail.com
 	and Domenico Simone - dome.simone@gmail.com
+Edited by Tina Quach - quachtina96@gmail.com
 """
 
 import getopt, sys, os, re, ast
