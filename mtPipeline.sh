@@ -121,21 +121,6 @@ fi
 cd $pathToSampleDir
 cp *.vcf "${pathToSampleDirs}VCF"
 
-cd "${pathToSampleDirs}VCF"
-
-VCFarray=(*vcf)
-echo "${VCFarray[0]}"
-echo "${VCFarray[1]}"
-echo "${VCFarray[2]}"
-
-java -jar GenomeAnalysisTK.jar \
-   -T CombineVariants \
-   -R chrRCRS.fa \
-   --variant "${VCFarray[0]}" \
-   --variant "${VCFarray[1]}" \
-   --variant "${VCFarray[2]}" \
-      -o combined.vcf \
-   -genotypeMergeOptions UNIQUIFY
 
 done
 

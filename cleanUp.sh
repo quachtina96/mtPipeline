@@ -62,7 +62,8 @@ echo "/mtExtract holds the bam/sam/fastq files resulting from coverage analysis"
 echo ""
 myMtoolbox_out="${pathToSampleDir}/myMtoolbox_out"
 mkdir $myMtoolbox_out
-mv *.rg.* $myMtoolbox_out 
+for file in *.rg.*; do
+	mv $file $myMtoolbox_out 
 echo "/myMtoolbox_out holds the bam/sam outputs of the indel realignment and marking of duplicates"
 
 rm Rplots.pdf
