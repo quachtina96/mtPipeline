@@ -1064,7 +1064,7 @@ def VCFoutput(dict_of_dicts, reference='RSRS'):
             if variant[0] not in present_pos and max(variant[6])<1 and variant[-1]=='del':
                 allelecount=[1]*len(variant[1])
                 aplotypes=map(lambda x: x+1, range(len(allelecount)))
-                r = vcf.parser._Record(CHROM='chrMT', POS=variant[0], ID='.', REF=variant[1], ALT=variant[3], QUAL='.', FILTER='PASS', INFO=OrderedDict([('AC',allelecount),('AN', len(variant[1])+1)]), FORMAT='GT:DP:HF:CILOW:CIUP', sample_indexes={sample:''},samples=[])
+                r = vcf.parser._Record(CHROM='chrRCRS', POS=variant[0], ID='.', REF=variant[1], ALT=variant[3], QUAL='.', FILTER='PASS', INFO=OrderedDict([('AC',allelecount),('AN', len(variant[1])+1)]), FORMAT='GT:DP:HF:CILOW:CIUP', sample_indexes={sample:''},samples=[])
                 #print variant[7], variant[6]
                 r._sample_indexes[sample]=[[0]+aplotypes, variant[2],variant[6], variant[7], variant[8]]
                 #print r._sample_indexes
@@ -1078,7 +1078,7 @@ def VCFoutput(dict_of_dicts, reference='RSRS'):
             elif variant[0] not in present_pos and max(variant[6])<1 and variant[-1]!='del':
                 allelecount=[1]*len(variant[3])
                 aplotypes=map(lambda x: x+1, range(len(allelecount)))
-                r = vcf.parser._Record(CHROM='chrMT', POS=variant[0], ID='.', REF=[variant[1]], ALT=variant[3], QUAL='.', FILTER='PASS', INFO=OrderedDict([('AC',allelecount),('AN', len(variant[3])+1)]), FORMAT='GT:DP:HF:CILOW:CIUP', sample_indexes={sample:''},samples=[])
+                r = vcf.parser._Record(CHROM='chrRCRS', POS=variant[0], ID='.', REF=[variant[1]], ALT=variant[3], QUAL='.', FILTER='PASS', INFO=OrderedDict([('AC',allelecount),('AN', len(variant[3])+1)]), FORMAT='GT:DP:HF:CILOW:CIUP', sample_indexes={sample:''},samples=[])
                 #print variant[6], variant[7]
                 r._sample_indexes[sample]=[[0]+aplotypes, variant[2],variant[6], variant[7], variant[8]]
                 r.samples.append(sample)
@@ -1091,7 +1091,7 @@ def VCFoutput(dict_of_dicts, reference='RSRS'):
             # if the v. position was never encountered before,is homoplasmic and is a deletion
             elif variant[0] not in present_pos and max(variant[6])>=1 and variant[-1]=='del':
                 allelecount=[1]*len(variant[1])
-                r = vcf.parser._Record(CHROM='chrMT', POS=variant[0], ID='.', REF=variant[1], ALT=variant[3], QUAL='.', FILTER='PASS', INFO=OrderedDict([('AC',allelecount),('AN',1)]), FORMAT='GT:DP:HF:CILOW:CIUP', sample_indexes={sample:''}, samples=[])
+                r = vcf.parser._Record(CHROM='chrRCRS', POS=variant[0], ID='.', REF=variant[1], ALT=variant[3], QUAL='.', FILTER='PASS', INFO=OrderedDict([('AC',allelecount),('AN',1)]), FORMAT='GT:DP:HF:CILOW:CIUP', sample_indexes={sample:''}, samples=[])
                 r._sample_indexes[sample]=[1,variant[2], variant[6], variant[7], variant[8]]
                 r.samples.append(sample)
                 if len(variant[3])>1:
@@ -1102,7 +1102,7 @@ def VCFoutput(dict_of_dicts, reference='RSRS'):
             # if the v. position was never encountered before,is homoplasmic and is not a deletion
             elif variant[0] not in present_pos and max(variant[6])>=1 and variant[-1]!='del':
                 allelecount=[1]*len(variant[3])
-                r = vcf.parser._Record(CHROM='chrMT', POS=variant[0], ID='.', REF=[variant[1]], ALT=variant[3], QUAL='.', FILTER='PASS', INFO=OrderedDict([('AC',allelecount),('AN',1)]), FORMAT='GT:DP:HF:CILOW:CIUP', sample_indexes={sample:''}, samples=[])
+                r = vcf.parser._Record(CHROM='chrRCRS', POS=variant[0], ID='.', REF=[variant[1]], ALT=variant[3], QUAL='.', FILTER='PASS', INFO=OrderedDict([('AC',allelecount),('AN',1)]), FORMAT='GT:DP:HF:CILOW:CIUP', sample_indexes={sample:''}, samples=[])
                 r._sample_indexes[sample]=[1,variant[2], variant[6], variant[7],variant[8]]
                 r.samples.append(sample)
                 if len(variant[3])>1:

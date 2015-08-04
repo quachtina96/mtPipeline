@@ -92,7 +92,7 @@ OUTPUT="${sampleName}.rg.ra.marked.bam" \
 METRICS_FILE="${sampleName}-metrics.txt" \
 ASSUME_SORTED=true \
 REMOVE_DUPLICATES=true \
-TMP_DIR=$(pwd)/tmp; done >> ${pathToSampleDirs}
+TMP_DIR=$(pwd)/tmp; done >> ${pathToSampleDirs}log.txt
 
 #Convert the marked.bam file to sam file for later processing (in  myAssembleMTgenome.py)
 for i in *marked.bam; do
@@ -128,7 +128,7 @@ done > logassemble.txt
 echo ""
 echo "##### GENERATING VCF OUTPUT #############"
 # ... AND VCF OUTPUT
-python /gpfs/home/quacht/scripts/VCFoutput.py -s $sampleName >> log.txt
+python /gpfs/home/quacht/scripts/VCFoutput.py -s $sampleName >> ${pathToSampleDirs}log.txt
 
 echo "VCF for $sampleName generated"
 

@@ -43,6 +43,8 @@ while getopts ":h:i:m" opt; do
 	esac
 done
 
+
+
 cd $VCFDir
 echo "Currently working in $VCFDir"
 
@@ -55,11 +57,11 @@ echo "${VCFarray[0]}"
 echo "${VCFarray[1]}"
 echo "${VCFarray[2]}"
 
-java -jar GenomeAnalysisTK.jar \
+java -jar $GATK \
    -T CombineVariants \
-   -R chrRCRS.fa \
-   --variant "${VCFarray[0]}" \
-   --variant "${VCFarray[1]}" \
-   --variant "${VCFarray[2]}" \
+   -R ${fasta_path}chrRCRS.fa \
+   --variant:proband "${VCFarray[2]}" \
+   --variant:mother "${VCFarray[1]}" \
+   --variant:father "${VCFarray[0]}" \
       -o combined.vcf \
-   -assumeIdentiticalSamples
+   -assumeIdenticalSamples
