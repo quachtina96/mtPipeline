@@ -2,9 +2,6 @@
 set -e
 set -o pipefail
 
-#do i need to source parameter.sh here?
-source /gpfs/home/quacht/scripts/parameters.sh
-
 usage()
 {
 	USAGE="""

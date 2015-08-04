@@ -96,6 +96,32 @@ IN EACH SAMPLE DIRECTORY (e.g. ID18_Proband)
 -"tmp" Directory: used during analysis to store temporary files. Empty when processes are complete.
 
 
+----------------------------------
+Running mtPipeline (Overview)
+---------------------------------
+NOTE: Make sure you read the TO DO section below before running mtPipeline.
+
+Basic execution of mtPipeline can be run as follows:
+	bash mtPipeline.sh -i <pathToSampleDirs> -p <pathToParametersFile>
+Both -i and -p options must be specified
+
+For a complete list of mtPipeline.sh options please run as follows:
+	bash mtPipeline.sh -h
+IMPORTANT: if you wish to run again mtPipeline in the same folder, you should delete all the files produced during the previous execution.
+
+
+
+==========TO DO========= 
+-----------------------
+Prepping Inputs
+-----------------------
+Directories must include slash at the end. DO NOT includ the slash for parameters.sh
+
+
+
+
+
+=============
 INSTALLATION
 ============
 git clone [url to my git project]
@@ -105,20 +131,3 @@ or
 Download the mtPipeline folder off of SourceForge
 
 Edit the variables in mtPipeline/scripts/parameters.sh that DO NOT start with an underscore in order to make the your paths are correct.
-
-==========TODO========= 
-
---------------------
-Running mtPipeline
--------------------
-
-Basic execution of mtPipeline can be run as follows:
-
-	bash mtPipeline.sh -i <pathToSampleDirs> -p <pathToParametersFile>
-
-Both -i and -p options must be specified.
-For a complete list of mtPipeline.sh options please run as follows:
-	
-	bash mtPipeline.sh -h
-
-IMPORTANT: if you wish to run again mtPipeline in the same folder, you should delete all the files produced during the previous execution.

@@ -3,7 +3,6 @@ set -e
 set -o pipefail
 
 #need to test with the following line commented out
-#source /gpfs/home/quacht/scripts/parameters.sh
 
 usage()
 {
@@ -15,6 +14,7 @@ usage()
 
 		-i	path to sample directory (should contain a mtExtract.csort.bam (a coordinate-sorted bam file of the extract mitchondrial region of an exome) 
 			that results from running simplepipeline.py on the sample directory)
+		-p  path to parameters.sh (should be included in the mtPipeline folder; do not include a final slash at the end)
 
 	Help options:
 
@@ -26,7 +26,7 @@ usage()
 
 sampleDir=""
 
-while getopts ":h:i:" opt; do 
+while getopts ":h:i:p:" opt; do 
 	case $opt in
 		h)
 			usage
@@ -34,6 +34,9 @@ while getopts ":h:i:" opt; do
 			;;
 		i)
 			sampleDir=$OPTARG
+			;;
+		p) 
+			parameters=$OPTARG
 			;;
 		\?)
 			echo "Invalid option: -$OPTARG" >&2
@@ -45,6 +48,8 @@ while getopts ":h:i:" opt; do
 			;;
 	esac
 done
+
+source $parameters
 
 cd $sampleDir
 echo "Currently working in $sampleDir"

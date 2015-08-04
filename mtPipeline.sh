@@ -84,7 +84,7 @@ pathToSampleDir="${pathToSampleDirs}${sampleDir}"
 #run simplepipe.py in order to merge the part.bam files, analyze coverage, extract chrM, remap the chrM to rCRS, and recalculate coverage 
 python ${mtPipelineScripts}simplepipe.py -i ${pathToSampleDir} -m ${mtPipelineFolder} >> ${pathToSampleDirs}log.txt
 #run myMtoolbox.sh to further process tge bam file resulting from above (Add RG, indel realign, mark duplicates, assemble MTgenome, variant call)
-bash ${mtPipelineScripts}myMtoolbox.sh -i  ${pathToSampleDir} >> ${pathToSampleDirs}log.txt
+bash ${mtPipelineScripts}myMtoolbox.sh -i  ${pathToSampleDir} -p ${pathToParameters}>> ${pathToSampleDirs}log.txt
 
 
 
