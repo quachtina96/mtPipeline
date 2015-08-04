@@ -74,9 +74,6 @@ echo "OK."
 echo ""
 fi
 
-#here in case I remove the export?
-mtPipelineScripts="${mtPipelineFolder}scripts/"
-
 cd "$pathToSampleDirs"
 pwd
 
@@ -107,4 +104,8 @@ cd ${pathToSampleDir}/results/
 cp *.vcf "${pathToSampleDirs}VCF"
 
 fi
+
+cd $pathToSampleDirs
+bash ${mtPipelineScripts}combineVCF.sh -i "${pathToSampleDirs}VCF" >> log.txt
+
 done

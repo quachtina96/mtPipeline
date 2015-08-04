@@ -56,7 +56,7 @@ sampleName="${i//_exome_mtExtractremap.csort.bam/}"
 echo "Adding read groups to the bam files";
 java -Xmx2g \
 -Djava.io.tmpdir=$(pwd)/tmp \
--jar /opt/applications/picard/current/AddOrReplaceReadGroups.jar \
+-jar ${picard}AddOrReplaceReadGroups.jar \
 INPUT="${i}" \
 OUTPUT="${sampleName}.rg.bam" \
 SORT_ORDER=coordinate \
@@ -72,7 +72,7 @@ samtools index "${sampleName}.rg.bam"
 echo "Realigning known indels for file ${i} using ${mtoolbox_folder}data/MITOMAP_HMTDB_known_indels.vcf as reference..."
 java -Xmx4g \
 -Djava.io.tmpdir=`pwd`/tmp \
--jar /opt/applications/gatk/3.3-0/GenomeAnalysisTK.jar \
+-jar "$GATK" \
 -T IndelRealigner \
 -R ${mtoolbox_folder}/data/chr${ref}.fa \
 -I "${sampleName}.rg.bam" \
@@ -86,7 +86,7 @@ echo "##### ELIMINATING PCR DUPLICATES WITH PICARDTOOLS MARKDUPLICATES..."
 echo "" 
 java -Xmx4g \
 -Djava.io.tmpdir="$(pwd)/tmp" \
--jar /opt/applications/picard/current/MarkDuplicates.jar \
+-jar "${picard}MarkDuplicates.jar" \
 INPUT="${sampleName}.rg.ra.bam" \
 OUTPUT="${sampleName}.rg.ra.marked.bam" \
 METRICS_FILE="${sampleName}-metrics.txt" \
@@ -115,7 +115,7 @@ echo ""
 for i in *rg.ra.marked.bam; do 
 outhandle=$(echo ${i} | sed 's/.rg.ra.marked.bam//g')-mtDNAassembly; 
 echo $outhandle
-python /gpfs/home/quacht/scripts/myAssembleMTgenome.py \
+python ${mtPipelineScripts}myAssembleMTgenome.py \
 -i ${i} \
 -o ${outhandle} \
 -r ${fasta_path} \
@@ -128,7 +128,7 @@ done > logassemble.txt
 echo ""
 echo "##### GENERATING VCF OUTPUT #############"
 # ... AND VCF OUTPUT
-python /gpfs/home/quacht/scripts/VCFoutput.py -s $sampleName >> ${pathToSampleDirs}log.txt
+python ${mtPipelineScripts}VCFoutput.py -s $sampleName >> ${pathToSampleDirs}log.txt
 
 echo "VCF for $sampleName generated"
 
