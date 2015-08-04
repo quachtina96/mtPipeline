@@ -1,3 +1,6 @@
+# this python script is a compilation of useful python function involved with SAM/BAM manipulation
+
+
 import shlex
 import subprocess as sp
 import os
@@ -17,6 +20,7 @@ def index(bam):
 	stdout, stderr = job.communicate()
 
 def qsort(bam):
+	"""Sorts the inputed bam file by query name"""
     command = "samtools sort -n " + str(bam) + " " + str(bam)[:-4] + ".qsort"
     print "Calling samtools sort..."
     job = shlex.split(command)
@@ -41,19 +45,9 @@ def bamtofastq(bam):
 	return (newFastq1, newFastq2)
 
 
-def samtobam(sam, reference="chrRCRS.fa"):
-	"""doesn't seem to be working properly"""
-	newBam = str(sam[:-4] + ".bam")
-	print "Converting sam to bam"
-	command = "samtools view -bT " + reference + \
-		" " + str(sam) + " -o " + newBam
-	args = shlex.split(command)
-	job = sp.Popen(args, stdout=sp.PIPE, stderr=sp.PIPE)
-	stdout, stderr = job.communicate()
-	return newBam
-
-
 def getHeader(bam):
+	"""INPUT: bam file
+		OUTPUT: bam file's header"""
 	command = "samtools view -H " + bam
 	args = shlex.split(command)
 	stdout, stderr = sp.Popen(args, stdout=sp.PIPE).communicate()
@@ -62,6 +56,8 @@ def getHeader(bam):
 
 
 def viewBam(bam):
+	"""Outputs or prints the sam version of the bam file, so that humans may read the bam file. 
+	If the stdout is written to a file, a sam file is created."""
 	command = "samtools view " + bam
 	args = shlex.split(command)
 	stdout, stderr = sp.Popen(args, stdout=sp.PIPE).communicate()
@@ -78,29 +74,6 @@ def csort(bam):
 	return bam[:-4] + ".csort.bam"
 
 
-def remapToFasta(bam, path, pathtoreference="/gpfs/home/quacht/data/chrRCRS.fa"):
-	"""This function is not working. Please ignore."""
-	qsortedBam = qsort(bam)
-	fastq_tuple = bamtofastq(qsortedBam)
-	command = "bwa mem " + pathtoreference + " " + fastq_tuple[0] + " " + fastq_tuple[1]
-	print "Calling bwa mem..."
-	remappedSam = str(bam[:-4] + "remap.sam")
-	args = shlex.split(command)
-	newPath = path + "/" + remappedSam
-	outfileHandle = open(newPath, 'w+')
-	remapJob = sp.Popen(args, stdout=outfileHandle)
-	stdout, stderr = remapJob.communicate()
-	print "Remap executed."
-
-	remappedBam = str(bam[:-4] + "remap.bam")
-	print "Converting remapped sam to bam"
-	command = "samtools view -bT " + pathtoreference + " " + remappedSam + " -o " + remappedBam
-	args = shlex.split(command)
-	job = sp.Popen(args, stdout=sp.PIPE, stderr=sp.PIPE)
-	stdout, stderr = job.communicate()
-
-	csortedBam = csort(remappedBam)
-	return csortedBam
 
 def remap2fa(bam, path, reference="/gpfs/home/quacht/data/chrRCRS.fa"):
     """This is the function remaps a given bam file to a reference fasta file. 
@@ -154,8 +127,8 @@ def remap2fa(bam, path, reference="/gpfs/home/quacht/data/chrRCRS.fa"):
 
     return remappedBam[:-4] + ".csort.bam"
 def getDepths(bam, extract=False):
-	"""# this function calculates the coverage of the mitochondrial region of a bam file and returns
-	# an array of the depths (in order of base)"""
+	""" this function calculates the coverage of the mitochondrial region of a bam file and returns
+	an array of the depths (in order of base)"""
 
 	# get depth of coverage at chrM contig of the wg
 	depthCommand = "samtools depth -r chrM %s" % (str(bam))
@@ -231,6 +204,7 @@ def extractChrM(bam,path):
 
 
 def readCount(bam):
+	"""This function returns the read count for the inputted bam file"""
 	command = "samtools index " + bam  # create the command string
 	stdout, stderr = sp.Popen(
 		shlex.split(command), stdout=sp.PIPE).communicate()
@@ -241,7 +215,7 @@ def readCount(bam):
 	return int(mtReadCount)  # make a tuple containing file and stdout
 
 def clean(PathToSampleDirectory):
-	"""This function removes the files the side products of remapping 
+	""" DEPRECATED. This function removes the files the side products of remapping 
 	to ref mitochondrial genome"""
 	if (PathToSampleDirectory[-1] != "/" ):
 		sideProducts = PathToSampleDirectory + "/temp"
