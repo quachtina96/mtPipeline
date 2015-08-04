@@ -2,8 +2,6 @@
 set -e
 set -o pipefail
 
-#NOTE: THIS HAS BEEN WRITTEN AS IF I WILL HAVE EVERYTHING RELEVANT PACKAGED INTO A MTPIPELINE FOLDER LIKE MTOOLBOX
-
 usage()
 {
 	USAGE="""
@@ -82,7 +80,10 @@ if  [ "$sampleDir" != "VCF" ] && [ "$sampleDir" != "log.txt" ]; then
 #run the analysis on single sample
 echo "Working with $sampleDir"
 pathToSampleDir="${pathToSampleDirs}${sampleDir}"
+
+#run simplepipe.py in order to merge the part.bam files, analyze coverage, extract chrM, remap the chrM to rCRS, and recalculate coverage 
 python ${mtPipelineScripts}simplepipe.py -i ${pathToSampleDir} -m ${mtPipelineFolder} >> ${pathToSampleDirs}log.txt
+#run myMtoolbox.sh to further process tge bam file resulting from above (Add RG, indel realign, mark duplicates, assemble MTgenome, variant call)
 bash ${mtPipelineScripts}myMtoolbox.sh -i  ${pathToSampleDir} >> ${pathToSampleDirs}log.txt
 
 
@@ -107,5 +108,6 @@ fi
 
 done
 
+#combine the VCFs for the cohort
 cd $pathToSampleDirs
 bash ${mtPipelineScripts}combineVCF.sh -i "${pathToSampleDirs}VCF" >> log.txt

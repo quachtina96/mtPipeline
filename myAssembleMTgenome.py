@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 
+#This script uses mtVariantCaller methods in order to analyze a marked.bam file as well as its corresponding sam file in 
+#in order to generate a pileup file that can be used to assemble the MT genome and later variant call.
+
 """
 Written by Ernesto Picardi - e.picardi@biologia.uniba.it
 Edited by Claudia Calabrese - claudia.calabrese23@gmail.com
@@ -122,7 +125,7 @@ hgenome=hgenome_fasta
 print mtdnafile
 print hgenome
 
-#the following works for a directory labeld ID18_Father
+#The sample name is derived from the current directory (which should be the sample directory e.g. ID18_Father)
 sample_name = os.getcwd().split('/')[-1]
 
 print "assembleMTgenome for sample", sample_name
@@ -234,7 +237,7 @@ if ext=='bam':
 	print cmd3
 	os.system(cmd3)
 
-#Tina: I stopped here	
+	
 mtdna={}
 x=1
 print 'Reading mtDNA sequence...'

@@ -2,7 +2,8 @@
 set -e
 set -o pipefail
 
-source /gpfs/home/quacht/scripts/parameters.sh
+#need to test with the following line commented out
+#source /gpfs/home/quacht/scripts/parameters.sh
 
 usage()
 {
@@ -12,7 +13,8 @@ usage()
 	
 	Mandatory input options:
 
-		-i	path to input folder.
+		-i	path to sample directory (should contain a mtExtract.csort.bam (a coordinate-sorted bam file of the extract mitchondrial region of an exome) 
+			that results from running simplepipeline.py on the sample directory)
 
 	Help options:
 
@@ -50,8 +52,11 @@ echo "Currently working in $sampleDir"
 echo ""
 echo "##### REALIGNING KNOWN INDELS WITH GATK INDELREALIGNER..."
 echo ""
+
 for i in *_mtExtractremap.csort.bam ; do 
 echo "Currently working with ${i}..."
+
+#First, add read groups to the file so IndelRealigner will be able to process the file
 sampleName="${i//_exome_mtExtractremap.csort.bam/}"
 echo "Adding read groups to the bam files";
 java -Xmx2g \
@@ -94,13 +99,14 @@ ASSUME_SORTED=true \
 REMOVE_DUPLICATES=true \
 TMP_DIR=$(pwd)/tmp; done >> ${pathToSampleDirs}log.txt
 
-#Convert the marked.bam file to sam file for later processing (in  myAssembleMTgenome.py)
+#Convert the marked.bam file to sam file for later processing (in myAssembleMTgenome.py)
 for i in *marked.bam; do
 samtools view -h $i > ${i}.sam
 done
 
+#remove read groups from the sam file (that has gone through adding of RG, indel realignment, 
+#and marking of duplicates) for downstream analysis in myAssembleMTgenome.py
 for i in *marked.bam.sam; do
-
 grep -v "^@" $i > "${i//.bam.sam/.norg.sam}"
 echo "${i//.bam.sam/.norg.sam}"
 done
@@ -127,7 +133,6 @@ done > logassemble.txt
 
 echo ""
 echo "##### GENERATING VCF OUTPUT #############"
-# ... AND VCF OUTPUT
 python ${mtPipelineScripts}VCFoutput.py -s $sampleName >> ${pathToSampleDirs}log.txt
 
 echo "VCF for $sampleName generated"
