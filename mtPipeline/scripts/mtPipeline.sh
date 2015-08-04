@@ -105,7 +105,7 @@ cp *.vcf "${pathToSampleDirs}VCF"
 
 fi
 
-done
-
 cd $pathToSampleDirs
 bash ${mtPipelineScripts}combineVCF.sh -i "${pathToSampleDirs}VCF" >> log.txt
+
+done
