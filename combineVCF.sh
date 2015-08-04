@@ -59,8 +59,7 @@ echo "${VCFarray[2]}"
 java -jar $GATK \
    -T CombineVariants \
    -R ${fasta_path}chrRCRS.fa \
-   --variant:proband "${VCFarray[2]}" \
-   --variant:mother "${VCFarray[1]}" \
-   --variant:father "${VCFarray[0]}" \
-      -o combined.vcf \
-   -assumeIdenticalSamples
+   --variant:proband "${VCFDir}/${VCFarray[2]}" \
+   --variant:mother "${VCFDir}/${VCFarray[1]}" \
+   --variant:father "${VCFDir}/${VCFarray[0]}" \
+	  -o combined.vcf \

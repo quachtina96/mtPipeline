@@ -61,7 +61,7 @@ sampleName="${i//_exome_mtExtractremap.csort.bam/}"
 echo "Adding read groups to the bam files";
 java -Xmx2g \
 -Djava.io.tmpdir=$(pwd)/tmp \
--jar ${picard}AddOrReplaceReadGroups.jar \
+-jar "${picard}AddOrReplaceReadGroups.jar" \
 INPUT="${i}" \
 OUTPUT="${sampleName}.rg.bam" \
 SORT_ORDER=coordinate \
