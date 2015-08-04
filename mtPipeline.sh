@@ -19,7 +19,7 @@ usage()
 
 	Input & workflow execution options (must include -i and -m):
  
-		-i	path to input folder (containing sample directories).
+		-i	path to input folder (containing sample directories). INCLUDE the last backslash.
 		-p  path to parameters.sh
 		-a	options for assembleMTgenome script [see assembleMTgenome.py -h for details]
 
@@ -81,18 +81,18 @@ cd "$pathToSampleDirs"
 pwd
 
 for sampleDir in *; do
-if [ "$sampleDir" != "ID18_Father" ] &&  [ "$sampleDir" != "VCF" ] && [ "$sampleDir" != "log.txt" ]; then
+if  [ "$sampleDir" != "VCF" ] && [ "$sampleDir" != "log.txt" ]; then
 #run the analysis on single sample
 echo "Working with $sampleDir"
 pathToSampleDir="${pathToSampleDirs}${sampleDir}"
-python ${mtPipelineScripts}simplepipe.py -i ${pathToSampleDir} -m ${mtPipelineFolder} >> log.txt
-bash ${mtPipelineScripts}myMtoolbox.sh -i  ${pathToSampleDir} >> log.txt
+python ${mtPipelineScripts}simplepipe.py -i ${pathToSampleDir} -m ${mtPipelineFolder} >> ${pathToSampleDirs}log.txt
+bash ${mtPipelineScripts}myMtoolbox.sh -i  ${pathToSampleDir} >> ${pathToSampleDirs}log.txt
 
 
 
 #clean up the sample directory
 echo "############ ORGANIZING OUTPUTS ##############"
-bash "${mtPipelineScripts}cleanUp.sh" -i "${pathToSampleDir}" >> log.txt
+bash "${mtPipelineScripts}cleanUp.sh" -i "${pathToSampleDir}" >> ${pathToSampleDirs}log.txt
 pwd
 
 #copy the vcf for that sample to a VCF folder for the sample set for future VCF analysis

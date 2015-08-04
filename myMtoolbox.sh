@@ -92,7 +92,7 @@ OUTPUT="${sampleName}.rg.ra.marked.bam" \
 METRICS_FILE="${sampleName}-metrics.txt" \
 ASSUME_SORTED=true \
 REMOVE_DUPLICATES=true \
-TMP_DIR=$(pwd)/tmp; done >> log.txt
+TMP_DIR=$(pwd)/tmp; done >> ${pathToSampleDirs}
 
 #Convert the marked.bam file to sam file for later processing (in  myAssembleMTgenome.py)
 for i in *marked.bam; do
