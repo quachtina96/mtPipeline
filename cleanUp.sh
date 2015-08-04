@@ -94,3 +94,4 @@ mv $mtExtractDir $bamFolder
 mv $myMtoolbox_out $bamFolder
 
 echo "/bam holds the following directories: partbam, chrM, and myMtoolbox_out"
+

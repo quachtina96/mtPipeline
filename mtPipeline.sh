@@ -81,11 +81,12 @@ cd "$pathToSampleDirs"
 pwd
 
 for sampleDir in *; do
+if [ "$sampleDir" != "ID18_Father" ] &&  [ "$sampleDir" != "VCF" ] && [ "$sampleDir" != "log.txt" ]; then
 #run the analysis on single sample
 echo "Working with $sampleDir"
 pathToSampleDir="${pathToSampleDirs}${sampleDir}"
-#python ${mtPipelineScripts}simplepipe.py -i ${pathToSampleDir} -m ${mtPipelineFolder} >> log.txt
-#bash ${mtPipelineScripts}myMtoolbox.sh -i  ${pathToSampleDir} >> log.txt
+python ${mtPipelineScripts}simplepipe.py -i ${pathToSampleDir} -m ${mtPipelineFolder} >> log.txt
+bash ${mtPipelineScripts}myMtoolbox.sh -i  ${pathToSampleDir} >> log.txt
 
 
 
@@ -101,7 +102,9 @@ pwd
 if [ ! -d "${pathToSampleDirs}VCF" ] ; then
 	 mkdir "${pathToSampleDirs}VCF"
 fi
-cd $pathToSampleDir
+
+cd ${pathToSampleDir}/results/
 cp *.vcf "${pathToSampleDirs}VCF"
 
+fi
 done
