@@ -87,10 +87,10 @@ cd $pathToSampleDir
 
 echo "/results holds the txt, pdf, and pileup vcf outputs of pipeline for the sample"
 
-bamFolder = "${pathToSampleDir}/bam"
+bamFolder="${pathToSampleDir}/bam"
 mkdir $bamFolder
 mv $partBamDir $bamFolder
 mv $mtExtractDir $bamFolder
-mv myMtoolbox_out $bamFolder
+mv $myMtoolbox_out $bamFolder
 
 echo "/bam holds the following directories: partbam, chrM, and myMtoolbox_out"

@@ -2,6 +2,8 @@
 set -e
 set -o pipefail
 
+source /gpfs/home/quacht/scripts/parameters.sh
+
 usage()
 {
 	USAGE="""
@@ -22,7 +24,7 @@ usage()
 
 sampleDir=""
 
-while getopts ":h:i:m" opt; do 
+while getopts ":h:i:" opt; do 
 	case $opt in
 		h)
 			usage
@@ -48,7 +50,7 @@ echo "Currently working in $sampleDir"
 echo ""
 echo "##### REALIGNING KNOWN INDELS WITH GATK INDELREALIGNER..."
 echo ""
-for i in *_mtExtractremap.csort.bam; do 
+for i in *_mtExtractremap.csort.bam ; do 
 echo "Currently working with ${i}..."
 sampleName="${i//_exome_mtExtractremap.csort.bam/}"
 echo "Adding read groups to the bam files";
@@ -127,6 +129,8 @@ echo ""
 echo "##### GENERATING VCF OUTPUT #############"
 # ... AND VCF OUTPUT
 python /gpfs/home/quacht/scripts/VCFoutput.py -s $sampleName >> log.txt
+
+echo "VCF for $sampleName generated"
 
 
 

@@ -26,7 +26,7 @@ mtdb_fasta=chr${ref}.fa
 hg19_fasta=/gpfs/group/stsi/genomes/GATK_bundle/hg19/ucsc.hg19.fasta 
 
 #mtPipeline
-mtPipelineFolder = /gpfs/home/quacht/
-mtPipelineScripts= ${mtPipelineFolder}scripts/
+mtPipelineFolder=/gpfs/home/quacht/
+mtPipelineScripts=${mtPipelineFolder}scripts/
 
 

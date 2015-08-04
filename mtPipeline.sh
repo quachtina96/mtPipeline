@@ -41,9 +41,6 @@ while getopts ":h:a:c:i:o:p:" opt; do
 		a)
 			assembleMTgenome_OPTS=$OPTARG
 			;;
-		c)
-			mt_classifier_OPTS=$OPTARG
-			;;
 		i)
 			pathToSampleDirs=$OPTARG
 			;;
@@ -78,7 +75,7 @@ echo ""
 fi
 
 #here in case I remove the export?
-mtPipelineScripts="${mtPipeFolder}scripts/"
+mtPipelineScripts="${mtPipelineFolder}scripts/"
 
 cd "$pathToSampleDirs"
 pwd
@@ -87,9 +84,8 @@ for sampleDir in *; do
 #run the analysis on single sample
 echo "Working with $sampleDir"
 pathToSampleDir="${pathToSampleDirs}${sampleDir}"
-#python simplepipe.py -m ${mtPipeFolder} -i ${pathToSampleDir} > log-simplepipe.txt
-python ${mtPipelineScripts}simplepipe.py -i ${pathToSampleDir} >> log.txt
-bash ${mtPipelineScripts}myMtoolbox.sh -i  ${pathToSampleDir} >> log.txt
+#python ${mtPipelineScripts}simplepipe.py -i ${pathToSampleDir} -m ${mtPipelineFolder} >> log.txt
+#bash ${mtPipelineScripts}myMtoolbox.sh -i  ${pathToSampleDir} >> log.txt
 
 
 
@@ -109,19 +105,3 @@ cd $pathToSampleDir
 cp *.vcf "${pathToSampleDirs}VCF"
 
 done
-
-cd "${pathToSampleDirs}VCF"
-
-VCFarray=(*vcf)
-echo "${VCFarray[0]}"
-echo "${VCFarray[1]}"
-echo "${VCFarray[2]}"
-
-java -jar GenomeAnalysisTK.jar \
-   -T CombineVariants \
-   -R chrRCRS.fa \
-   --variant "${VCFarray[0]}" \
-   --variant "${VCFarray[1]}" \
-   --variant "${VCFarray[2]}" \
-      -o combined.vcf \
-   -assumeIdentiticalSamples
