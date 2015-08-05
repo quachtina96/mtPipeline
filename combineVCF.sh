@@ -51,7 +51,7 @@ echo ""
 echo "##### COMBINING VCF FILES..."
 echo ""
 
-VCFarray=(*vcf)
+VCFarray=(*VCF.vcf)
 echo "${VCFarray[0]}"
 echo "${VCFarray[1]}"
 echo "${VCFarray[2]}"
@@ -62,5 +62,6 @@ java -jar /opt/applications/gatk/3.3-0/GenomeAnalysisTK.jar \
    --variant:father "${VCFDir}/${VCFarray[0]}" \
    --variant:mother "${VCFDir}/${VCFarray[1]}" \
    --variant:proband "${VCFDir}/${VCFarray[2]}" \
-   --rod_priority_list proband,mother,father \
-	  -o combined.vcf \
+   -genotypeMergeOptions PRIORITIZE \
+   -priority proband,mother,father \
+	  -o combinedPrioritized.vcf \
