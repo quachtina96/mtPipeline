@@ -10,7 +10,7 @@ usage()
 		Mandatory input options:
 
 		-i	path to VCFDir.
-
+		-p  path to parameters.sh
 	Help options:
 
 		-h	view usage
@@ -19,7 +19,7 @@ usage()
 	echo "$USAGE"
 }
 
-while getopts ":h:i:m" opt; do 
+while getopts ":h:i:p:" opt; do 
 	case $opt in
 		h)
 			usage
@@ -27,6 +27,9 @@ while getopts ":h:i:m" opt; do
 			;;
 		i)
 			VCFDir=$OPTARG
+			;;
+		p) 
+			parameters=$OPTARG
 			;;
 		\?)
 			echo "Invalid option: -$OPTARG" >&2
@@ -39,8 +42,8 @@ while getopts ":h:i:m" opt; do
 	esac
 done
 
-
-
+source "$parameters"
+echo $VCFDir
 cd $VCFDir
 echo "Currently working in $VCFDir"
 
@@ -53,10 +56,14 @@ echo "${VCFarray[0]}"
 echo "${VCFarray[1]}"
 echo "${VCFarray[2]}"
 
-java -jar $GATK \
+echo "${VCFDir}/${VCFarray[1]}"
+echo  "${VCFDir}/${VCFarray[2]}"
+echo "${VCFDir}/${VCFarray[0]}"
+
+java -jar /opt/applications/gatk/3.3-0/GenomeAnalysisTK.jar \
    -T CombineVariants \
    -R ${fasta_path}chrRCRS.fa \
-   --variant:proband "${VCFDir}/${VCFarray[2]}" \
+   --variant:proband "${VCFDir}/${VCFarray[0]}" \
    --variant:mother "${VCFDir}/${VCFarray[1]}" \
-   --variant:father "${VCFDir}/${VCFarray[0]}" \
+   --variant:father "${VCFDir}/${VCFarray[2]}" \
 	  -o combined.vcf \

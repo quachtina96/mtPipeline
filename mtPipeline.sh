@@ -110,4 +110,4 @@ done
 
 #combine the VCFs for the cohort
 cd $pathToSampleDirs
-bash ${mtPipelineScripts}combineVCF.sh -i "${pathToSampleDirs}VCF" >> log.txt
+bash ${mtPipelineScripts}combineVCF.sh -i "${pathToSampleDirs}VCF" -p "$pathToParameters" >> log.txt
