@@ -56,14 +56,11 @@ echo "${VCFarray[0]}"
 echo "${VCFarray[1]}"
 echo "${VCFarray[2]}"
 
-echo "${VCFDir}/${VCFarray[1]}"
-echo  "${VCFDir}/${VCFarray[2]}"
-echo "${VCFDir}/${VCFarray[0]}"
-
 java -jar /opt/applications/gatk/3.3-0/GenomeAnalysisTK.jar \
    -T CombineVariants \
    -R ${fasta_path}chrRCRS.fa \
-   --variant:proband "${VCFDir}/${VCFarray[0]}" \
+   --variant:father "${VCFDir}/${VCFarray[0]}" \
    --variant:mother "${VCFDir}/${VCFarray[1]}" \
-   --variant:father "${VCFDir}/${VCFarray[2]}" \
+   --variant:proband "${VCFDir}/${VCFarray[2]}" \
+   --rod_priority_list proband,mother,father \
 	  -o combined.vcf \
