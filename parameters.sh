@@ -25,7 +25,7 @@ module load python
 picard=/opt/applications/picard/current/
 
 #mtPipeline
-mtPipelineFolder=/gpfs/home/quacht/mtPipeline/
+mtPipelineFolder=/gpfs/home/quach/t
 mtPipelineScripts=${mtPipelineFolder}scripts/
 
 #MToolBox bundle
