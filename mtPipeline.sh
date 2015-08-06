@@ -108,6 +108,22 @@ fi
 
 done
 
-#combine the VCFs for the cohort
+echo "################# COMBINING VCFS ###################"
 cd $pathToSampleDirs
-bash ${mtPipelineScripts}combineVCF.sh -i "${pathToSampleDirs}VCF" -p "$pathToParameters" >> log.txt
+bash ${mtPipelineScripts}combineVCF.sh -i "${pathToSampleDirs}VCF" -p "$pathToParameters" >> ${pathToSampleDirs}log.txt
+
+echo "################# COMPLETING AND ORDERING  COMBINED VCF #############"
+if [ ! -d "${pathToSampleDirs}VCF/tables/" ] ; then
+	 mkdir "${pathToSampleDirs}VCF/tables/"
+fi
+
+cd ${pathToSampleDir}/results/
+cp *assembly-table.txt "${pathToSampleDirs}VCF/tables/"
+
+fi
+
+cd $pathToSampleDirs
+python ${mtPipelineScripts}completeVCF.py -c "${pathToSampleDirs}VCF/combinedVCF}" -t "${pathToSampleDirs}VCF/tables/" > ${pathToSampleDirs}log_completeVCF.txt
+
+cd $pathToSampleDirs
+echo "Job complete"

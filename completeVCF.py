@@ -12,6 +12,8 @@ def usage():
     creates a completed.vcf file that includes all information on each sample at positions of interest.  
 	It calculates this info from info extracted from the mtDNAassembly-table for the corresponding sample. 
 
+    It also creates a ordered.vcf file that follows the following order: proband,mother,father, by switching the first and last sample columns.
+
 	The methods used to perform calculations were adapted from those in mtVariantCaller.py.
 
 	The script has been tested only with sample trios (father, mother, proband).
