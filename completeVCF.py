@@ -5,14 +5,15 @@ import math
 import re
 import ast
 from collections import OrderedDict
+import vcf
 import getopt
+
 
 def usage():
     print """This script reads a combined.vcf file (which displays "." or "./." to indicate missing information) and 
     creates a completed.vcf file that includes all information on each sample at positions of interest.  
 	It calculates this info from info extracted from the mtDNAassembly-table for the corresponding sample. 
 
-	The methods used to perform calculations were adapted from those in mtVariantCaller.py.
 
 	The script has been tested only with sample trios (father, mother, proband).
 
@@ -46,9 +47,10 @@ if (combinedVCF == ""):
     print "Missing Required Option: -c <path to combined VCF>"
     sys.exit()
 
-# FUNCTIONS ####################################################
-
+# FUNCTIONS ####################################################3
 # Wilson confidence interval lower bound
+
+
 def CIW_LOW(het, covBase):
     '''The function calculates the heteroplasmic fraction and the related
     confidence interval with 95% of coverage probability,
@@ -70,6 +72,8 @@ def CIW_LOW(het, covBase):
         return wilsonci_low
 
 # Wilson confidence interval upper bound
+
+
 def CIW_UP(het, covBase):
     '''The function calculates the heteroplasmic fraction and the related
     confidence interval with 95% of coverage probability,
@@ -91,6 +95,8 @@ def CIW_UP(het, covBase):
         return wilsonci_up
 
 # Agresti-Coull confidence interval lower bound
+
+
 def CIAC_LOW(cov, covBase):
     '''The function calculates the heteroplasmic fraction and the related confidence interval 
     for heteroplasmic fraction with 95% of coverage probability,considering the 
@@ -112,6 +118,8 @@ def CIAC_LOW(cov, covBase):
         return agresticoull_low
 
 # Agresti-Coull confidence interval upper bound
+
+
 def CIAC_UP(cov, covBase):
     '''The function calculates the heteroplasmic fraction and the related confidence interval 
     for heteroplasmic fraction with 95% of coverage probability,considering the 
@@ -134,6 +142,9 @@ def CIAC_UP(cov, covBase):
 
 
 # Heteroplasmic fraction quantification
+
+# I think cov = just coverage that proves the variant, whereas covbase is
+# total cov for that base
 def heteroplasmy(cov, covBase):
     try:
         if covBase >= cov:
@@ -408,6 +419,7 @@ for line in completeVCF:
 completeVCFfile.close()
 
 print "completed.vcf created."
+<<<<<<< HEAD
 print "changing sample order"
 
 pathToCompletedVCF = str(os.getcwd()) + "/completed.vcf"
@@ -427,3 +439,6 @@ os.chdir(savedDir)
 
 
 	
+=======
+os.chdir(savedDir)
+>>>>>>> parent of 4fe1c95... updated completeVCF.py
