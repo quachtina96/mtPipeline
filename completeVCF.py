@@ -215,11 +215,86 @@ def addVariantInfo(VarInfo, FieldOrder, VCFcolumn, row):
     row[VCFcolumn] = infoString
     return row
 
+def readVCF(pathtoVCF):
+	"""takes in a path to a VCF and returns an array in which each element is a line in the VCF file.
+	"""
+	pathtoVCFArray = pathtoVCF.split("/")
+	VCFfileName = pathtoVCFArray.pop()
+	print VCFfileName
+	VCFdir = "/".join(pathtoVCFArray) + "/"
+	print VCFdir
+	savedDir = os.getcwd()
+	os.chdir(VCFdir)
+	VCFfile = open(VCFfileName, 'r')
+	VCFlines = []
+	for line in VCFfile:
+		VCFlines.append(line)
+	VCFfile.close()
+	os.chdir(savedDir)
+	
+	return VCFlines
+
+def changeSampleOrder(pathToVCF, currentSampleOrder, desiredSampleOrder):
+	"""This function takes in 
+	 the path to a VCF file
+	 a string containing the current sample order (comma separated)
+	 and a string containing the desired sample order (comma separated)
+	"""
+	changedVCF=[]
+	currList=currentSampleOrder.split(",")
+	print currList
+	desiredList=desiredSampleOrder.split(",")
+	print desiredList
+	i=0
+	while (i < len(currList)):
+		print "ON PAIR %s" %(i+1)
+		print "current list is " + currList[i] + " at " + str(i)
+		print "desired list is " + desiredList[i] + " at " + str(i) 
+		if (currList[i]==desiredList[i]):
+			print ""
+			print "currlist[i] is equal to desiredList[i]; VCF at sample column %s matches already." %(i+1)		
+		else:		
+			VCFlines=readVCF(pathToVCF)
+			for line in VCFlines:
+				if (line.startswith("##")):
+					changedVCF.append(line) 
+					print "header line; skip"      			
+				else:
+					print "currently on line"
+					print line
+					row = line.strip().split("\t")
+					print "changing sample %s to %s" %(i+1, desiredList[i])
+					currIndex=0
+					while currIndex < len(currList):
+						if currList[currIndex] == desiredList[i]:
+							temp=row[9+i]	
+							row[9+i]=row[currIndex+9]
+							row[currIndex+9]=temp
+							newLine="\t".join(row)
+							changedVCF.append(newLine)	
+							print "NEW LINE:"
+							print newLine
+							temp=currList[i]
+							currList[currIndex]=temp
+							currList[i]=currList[currIndex]
+						currIndex=currIndex+1				
+		i=i+1
+	newVCF=open("sampleOrderChanged.vcf", "w+")
+	for line in changedVCF:
+		if (line.endswith("\n")):
+			newVCF.write(line)
+		else:
+			newVCF.write(line +"\n")
+	newVCF.close()
+
 #################################################### SCRIPT ##############
 
 # READ IN FILES
 #read in tables-c
+savedDir=os.getcwd()
+print savedDir + "is savedDir"
 os.chdir(assembleDir)
+print "just chdir's to assembleDir"
 tableArray = os.listdir(assembleDir)
 
 motherTable = []
@@ -244,21 +319,11 @@ for table in tableArray:
 print ""
 
 #read in VCF
-pathtoVCFArray = combinedVCF.split("/")
-VCFfileName = pathtoVCFArray.pop()
-print VCFfileName
-VCFdir = "/".join(pathtoVCFArray) + "/"
-print VCFdir
-savedDir = os.getcwd()
-
-os.chdir(VCFdir)
-VCFfile = open(VCFfileName, 'r')
-VCFlines = []
-print "Printing VCFlines"
-for line in VCFfile:
-    VCFlines.append(line)
-VCFfile.close()
-
+print os.getcwd()
+os.chdir(savedDir)
+print "just chdir's to saveddir"
+print os.getcwd()
+VCFlines=readVCF(combinedVCF)
 
 # go through each line in the VCF and create a new version that will be
 # written to a VCF file
@@ -330,6 +395,8 @@ for line in VCFlines:
         	print "appending old line to completeVCF"
         	completeVCF.append(line)
 #write complete VCF into a new file
+print "before writng completed, we are at the dir"
+print os.getcwd()
 completeVCFfile=open("completed.vcf", "w+")
 for line in completeVCF:
 	if line.startswith("#"):
@@ -341,10 +408,22 @@ for line in completeVCF:
 completeVCFfile.close()
 
 print "completed.vcf created."
+print "changing sample order"
+
+pathToCompletedVCF = str(os.getcwd()) + "/completed.vcf"
+print pathToCompletedVCF
+changeSampleOrder(pathToCompletedVCF, "father,mother,proband", "proband,mother,father")
+
 os.chdir(savedDir)
 
-def changeSampleOrder(VCF, sampleOrder):
-	"""This function takes in the path to a VCF file and a string containing
-	 the desired sample order (comma separated)"""
-	
+
+#NOTE I MESSED UP SOMEWHERE IN THE OS CHANGING DIRECTORIES THING. GOTTA FIX THAT. I NEED TO CD OUT OF TABLES AND BACK INTO VCF,	
+
+
+
+
+
+
+
+
 	

@@ -758,7 +758,7 @@ def mtvcf_main_analysis(mtable, sam, name2, tail=5):
     # includes only values used for parsing
     c = 0
     while c < len(sam):
-        sam[c] = sam[c][0:9]
+        sam[c] = sam[c][0:9] #Tina: remove level of depth?
         c += 1
     # assigns a null value to fields. NB: refpos is the leftmost position of
     # the subject seq minus 1.
@@ -1053,7 +1053,7 @@ def mtvcf_main_analysis(mtable, sam, name2, tail=5):
     Indels[name2].extend(Subst[name2])
     return Indels  # it's a dictionary
     # dict_of_dicts.update(Indels)
-    # return dict_of_dicts
+    # return dict_of_dicts		
 
 
 # END OF MAIN ANALYSIS
