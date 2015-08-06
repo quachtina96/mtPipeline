@@ -5,15 +5,14 @@ import math
 import re
 import ast
 from collections import OrderedDict
-import vcf
 import getopt
-
 
 def usage():
     print """This script reads a combined.vcf file (which displays "." or "./." to indicate missing information) and 
     creates a completed.vcf file that includes all information on each sample at positions of interest.  
 	It calculates this info from info extracted from the mtDNAassembly-table for the corresponding sample. 
 
+	The methods used to perform calculations were adapted from those in mtVariantCaller.py.
 
 	The script has been tested only with sample trios (father, mother, proband).
 
@@ -47,10 +46,9 @@ if (combinedVCF == ""):
     print "Missing Required Option: -c <path to combined VCF>"
     sys.exit()
 
-# FUNCTIONS ####################################################3
+# FUNCTIONS ####################################################
+
 # Wilson confidence interval lower bound
-
-
 def CIW_LOW(het, covBase):
     '''The function calculates the heteroplasmic fraction and the related
     confidence interval with 95% of coverage probability,
@@ -72,8 +70,6 @@ def CIW_LOW(het, covBase):
         return wilsonci_low
 
 # Wilson confidence interval upper bound
-
-
 def CIW_UP(het, covBase):
     '''The function calculates the heteroplasmic fraction and the related
     confidence interval with 95% of coverage probability,
@@ -95,8 +91,6 @@ def CIW_UP(het, covBase):
         return wilsonci_up
 
 # Agresti-Coull confidence interval lower bound
-
-
 def CIAC_LOW(cov, covBase):
     '''The function calculates the heteroplasmic fraction and the related confidence interval 
     for heteroplasmic fraction with 95% of coverage probability,considering the 
@@ -118,8 +112,6 @@ def CIAC_LOW(cov, covBase):
         return agresticoull_low
 
 # Agresti-Coull confidence interval upper bound
-
-
 def CIAC_UP(cov, covBase):
     '''The function calculates the heteroplasmic fraction and the related confidence interval 
     for heteroplasmic fraction with 95% of coverage probability,considering the 
@@ -142,9 +134,6 @@ def CIAC_UP(cov, covBase):
 
 
 # Heteroplasmic fraction quantification
-
-# I think cov = just coverage that proves the variant, whereas covbase is
-# total cov for that base
 def heteroplasmy(cov, covBase):
     try:
         if covBase >= cov:
@@ -227,85 +216,82 @@ def addVariantInfo(VarInfo, FieldOrder, VCFcolumn, row):
     return row
 
 def readVCF(pathtoVCF):
-	"""takes in a path to a VCF and returns an array in which each element is a line in the VCF file.
-	"""
-	pathtoVCFArray = pathtoVCF.split("/")
-	VCFfileName = pathtoVCFArray.pop()
-	print VCFfileName
-	VCFdir = "/".join(pathtoVCFArray) + "/"
-	print VCFdir
-	savedDir = os.getcwd()
-	os.chdir(VCFdir)
-	VCFfile = open(VCFfileName, 'r')
-	VCFlines = []
-	for line in VCFfile:
-		VCFlines.append(line)
-	VCFfile.close()
-	os.chdir(savedDir)
-	
-	return VCFlines
+    """takes in a path to a VCF and returns an array in which each element is a line in the VCF file.
+    """
+    pathtoVCFArray = pathtoVCF.split("/")
+    VCFfileName = pathtoVCFArray.pop()
+    print VCFfileName
+    VCFdir = "/".join(pathtoVCFArray) + "/"
+    print VCFdir
+    savedDir = os.getcwd()
+    os.chdir(VCFdir)
+    VCFfile = open(VCFfileName, 'r')
+    VCFlines = []
+    for line in VCFfile:
+        VCFlines.append(line)
+    VCFfile.close()
+    os.chdir(savedDir)
+    
+    return VCFlines
 
-def changeSampleOrder(pathToVCF, currentSampleOrder, desiredSampleOrder):
-	"""This function takes in 
-	 the path to a VCF file
-	 a string containing the current sample order (comma separated)
-	 and a string containing the desired sample order (comma separated)
-	"""
-	changedVCF=[]
-	currList=currentSampleOrder.split(",")
-	print currList
-	desiredList=desiredSampleOrder.split(",")
-	print desiredList
-	i=0
-	while (i < len(currList)):
-		print "ON PAIR %s" %(i+1)
-		print "current list is " + currList[i] + " at " + str(i)
-		print "desired list is " + desiredList[i] + " at " + str(i) 
-		if (currList[i]==desiredList[i]):
-			print ""
-			print "currlist[i] is equal to desiredList[i]; VCF at sample column %s matches already." %(i+1)		
-		else:		
-			VCFlines=readVCF(pathToVCF)
-			for line in VCFlines:
-				if (line.startswith("##")):
-					changedVCF.append(line) 
-					print "header line; skip"      			
-				else:
-					print "currently on line"
-					print line
-					row = line.strip().split("\t")
-					print "changing sample %s to %s" %(i+1, desiredList[i])
-					currIndex=0
-					while currIndex < len(currList):
-						if currList[currIndex] == desiredList[i]:
-							temp=row[9+i]	
-							row[9+i]=row[currIndex+9]
-							row[currIndex+9]=temp
-							newLine="\t".join(row)
-							changedVCF.append(newLine)	
-							print "NEW LINE:"
-							print newLine
-							temp=currList[i]
-							currList[currIndex]=temp
-							currList[i]=currList[currIndex]
-						currIndex=currIndex+1				
-		i=i+1
-	newVCF=open("sampleOrderChanged.vcf", "w+")
-	for line in changedVCF:
-		if (line.endswith("\n")):
-			newVCF.write(line)
-		else:
-			newVCF.write(line +"\n")
-	newVCF.close()
+def switchSampleOrder(pathToVCF, currentSampleOrder, desiredSampleOrder):
+    """This function takes in 
+     the path to a VCF file
+     a string containing the current sample order (comma separated)
+     and a string containing the desired sample order (comma separated)
+    """
+    changedVCF=[]
+    currList=currentSampleOrder.split(",")
+    print currList
+    desiredList=desiredSampleOrder.split(",")
+    print desiredList
+    i=0
+    while (i < len(currList)):
+        print "ON PAIR %s" %(i+1)
+        print "current list is " + currList[i] + " at " + str(i)
+        print "desired list is " + desiredList[i] + " at " + str(i) 
+        if (currList[i]==desiredList[i]):
+            print ""
+            print "currlist[i] is equal to desiredList[i]; VCF at sample column %s matches already." %(i+1)     
+        else:       
+            VCFlines=readVCF(pathToVCF)
+            for line in VCFlines:
+                if (line.startswith("##")):
+                    changedVCF.append(line) 
+                    print "header line; skip"               
+                else:
+                    print "currently on line"
+                    print line
+                    row = line.strip().split("\t")
+                    print "changing sample %s to %s" %(i+1, desiredList[i])
+                    currIndex=0
+                    while currIndex < len(currList):
+                        if currList[currIndex] == desiredList[i]:
+                            temp=row[9+i]   
+                            row[9+i]=row[currIndex+9]
+                            row[currIndex+9]=temp
+                            newLine="\t".join(row)
+                            changedVCF.append(newLine)  
+                            print "NEW LINE:"
+                            print newLine
+                            temp=currList[i]
+                            currList[currIndex]=temp
+                            currList[i]=currList[currIndex]
+                        currIndex=currIndex+1               
+        i=i+1
+    newVCF=open("sampleOrderChanged.vcf", "w+")
+    for line in changedVCF:
+        if (line.endswith("\n")):
+            newVCF.write(line)
+        else:
+            newVCF.write(line +"\n")
+    newVCF.close()
 
 #################################################### SCRIPT ##############
 
 # READ IN FILES
 #read in tables-c
-savedDir=os.getcwd()
-print savedDir + "is savedDir"
 os.chdir(assembleDir)
-print "just chdir's to assembleDir"
 tableArray = os.listdir(assembleDir)
 
 motherTable = []
@@ -330,11 +316,22 @@ for table in tableArray:
 print ""
 
 #read in VCF
-print os.getcwd()
-os.chdir(savedDir)
-print "just chdir's to saveddir"
-print os.getcwd()
-VCFlines=readVCF(combinedVCF)
+savedDir = os.getcwd()
+pathtoVCFArray = combinedVCF.split("/")
+VCFfileName = pathtoVCFArray.pop()
+print VCFfileName
+VCFdir = "/".join(pathtoVCFArray) + "/"
+print VCFdir
+
+
+os.chdir(VCFdir)
+VCFfile = open(VCFfileName, 'r')
+VCFlines = []
+for line in VCFfile:
+
+    VCFlines.append(line)
+VCFfile.close()
+print "Printing VCFlines"
 
 # go through each line in the VCF and create a new version that will be
 # written to a VCF file
@@ -406,8 +403,6 @@ for line in VCFlines:
         	print "appending old line to completeVCF"
         	completeVCF.append(line)
 #write complete VCF into a new file
-print "before writng completed, we are at the dir"
-print os.getcwd()
 completeVCFfile=open("completed.vcf", "w+")
 for line in completeVCF:
 	if line.startswith("#"):
@@ -419,26 +414,24 @@ for line in completeVCF:
 completeVCFfile.close()
 
 print "completed.vcf created."
-<<<<<<< HEAD
-print "changing sample order"
+print os.getcwd()
 
-pathToCompletedVCF = str(os.getcwd()) + "/completed.vcf"
-print pathToCompletedVCF
-changeSampleOrder(pathToCompletedVCF, "father,mother,proband", "proband,mother,father")
-
+orderedVCF=[]
+for line in completeVCF:
+    if line.startswith("##"):
+        orderedVCF.append(line)
+    else:
+        row = line.strip().split("\t")
+        temp=row[9]   
+        row[9]=row[11]
+        row[11]=temp
+        newLine="\t".join(row)
+        orderedVCF.append(newLine) 
+orderedVCFfile= open(VCFdir+"ordered.vcf", "w+")
+for line in orderedVCF:
+    if (line.endswith("\n")):
+        orderedVCFfile.write(line)
+    else:
+        orderedVCFfile.write(line +"\n")
+orderedVCFfile.close()
 os.chdir(savedDir)
-
-
-#NOTE I MESSED UP SOMEWHERE IN THE OS CHANGING DIRECTORIES THING. GOTTA FIX THAT. I NEED TO CD OUT OF TABLES AND BACK INTO VCF,	
-
-
-
-
-
-
-
-
-	
-=======
-os.chdir(savedDir)
->>>>>>> parent of 4fe1c95... updated completeVCF.py
