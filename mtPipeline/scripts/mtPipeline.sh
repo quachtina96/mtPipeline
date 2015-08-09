@@ -2,8 +2,6 @@
 set -e
 set -o pipefail
 
-#NOTE: THIS HAS BEEN WRITTEN AS IF I WILL HAVE EVERYTHING RELEVANT PACKAGED INTO A MTPIPELINE FOLDER LIKE MTOOLBOX
-
 usage()
 {
 	USAGE="""
@@ -82,8 +80,11 @@ if  [ "$sampleDir" != "VCF" ] && [ "$sampleDir" != "log.txt" ]; then
 #run the analysis on single sample
 echo "Working with $sampleDir"
 pathToSampleDir="${pathToSampleDirs}${sampleDir}"
+
+#run simplepipe.py in order to merge the part.bam files, analyze coverage, extract chrM, remap the chrM to rCRS, and recalculate coverage 
 python ${mtPipelineScripts}simplepipe.py -i ${pathToSampleDir} -m ${mtPipelineFolder} >> ${pathToSampleDirs}log.txt
-bash ${mtPipelineScripts}myMtoolbox.sh -i  ${pathToSampleDir} >> ${pathToSampleDirs}log.txt
+#run myMtoolbox.sh to further process tge bam file resulting from above (Add RG, indel realign, mark duplicates, assemble MTgenome, variant call)
+bash ${mtPipelineScripts}myMtoolbox.sh -i  ${pathToSampleDir} -p ${pathToParameters}>> ${pathToSampleDirs}log.txt
 
 
 
@@ -103,9 +104,26 @@ fi
 cd ${pathToSampleDir}/results/
 cp *.vcf "${pathToSampleDirs}VCF"
 
+if [ ! -d "${pathToSampleDirs}VCF/tables/" ] ; then
+	 mkdir "${pathToSampleDirs}VCF/tables/"
 fi
 
-cd $pathToSampleDirs
-bash ${mtPipelineScripts}combineVCF.sh -i "${pathToSampleDirs}VCF" >> log.txt
+cd ${pathToSampleDir}/results/
+cp *assembly-table.txt "${pathToSampleDirs}VCF/tables/"
+
+fi
 
 done
+
+echo "################# COMBINING VCFS ###################"
+cd $pathToSampleDirs
+bash ${mtPipelineScripts}combineVCF.sh -i "${pathToSampleDirs}VCF" -p "$pathToParameters" >> ${pathToSampleDirs}log.txt
+
+echo "################# COMPLETING AND ORDERING  COMBINED VCF #############"
+
+
+cd $pathToSampleDirs
+python ${mtPipelineScripts}completeVCF.py -c "${pathToSampleDirs}VCF/combined.vcf" -t "${pathToSampleDirs}VCF/tables/" > ${pathToSampleDirs}log_completeVCF.txt
+
+cd $pathToSampleDirs
+echo "Job complete"
