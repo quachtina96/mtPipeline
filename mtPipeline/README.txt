@@ -190,13 +190,8 @@ TWO WAYS:
 =============
 INSTALLATION
 ============
--create your own mtPipeline folder in whatever directory your desire (suggested: your home directory)
--copy the contents of /gpfs/home/quacht/mtPipeline to your own mtPipeline Directory
+git clone https://github.com/quachtina96/mtPipeline.git
+- make sure you know where your copy of the mtPipeline folder is
 - edit the contents of mtPipeline/scripts/parameters.sh to match your environment
-
-mkdir <your home directory>mtPipeline
-cd /gpfs/home/quacht/
-cp mtPipeline <your home directory>mtPipeline
-cd <your home directory>mtPipeline
 
 
