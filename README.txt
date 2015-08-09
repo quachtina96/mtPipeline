@@ -37,6 +37,7 @@ myAssembleMTgenome.py   (augmented MToolBox script for assembling the MTgenome)
 mtVariantCaller.py  	(MToolbox script for variant calling)
 VCFoutput.py 			(MToolBox script for creating the VCF)
 combineVCF.sh 			(combines the VCFs of a cohort into a single VCF for haplogroup analysis)
+completeVCF.py   		(generates completed.vcf from combined.vcf using info extracted from the samples' assembly-table.txt to fill missing info)
 pipeFunctions.py 		(contains the sam/bam analysis functions called by simplepipe.py)
 histDepth.R 			(creates a histogram of the depth of coverage for each; called by simplepipe.py)
 parameters.sh 			(sourced in mtPipeline, denotes the paths to various tools and executables)
@@ -86,7 +87,12 @@ After that, a new VCF folder for the cohort is created and the VCF for the cohor
 =====OUTPUTS:======
 IN THE COHORT DIRECTORY (e.g. ID18)
 - directory for each SAMPLE (e.g. ID18_Father, ID18_Mother, ID18_Proband)
-- "VCF" directory that contains a VCF for each sample & the combined VCF (Proband, Mother, Father order)
+- "VCF" directory 
+	- "tables" directory (holds copy of each sample's assembly-table.txt)
+	- a VCF for each sample (<sampleName>_VCF.vcf)
+	- combined.vcf (output of combineVCF.sh; Father, Mother, Proband order)
+	- completed.vcf (output of completeVCF.py; Father, Mother, Proband order; no missing info)
+	- ordered.vcf (FINAL VCF OUTPUT of completeVCF.py; Proband, Mother, Father order.)
 - log.txt (the outputs of each script called in the pipeline is written to the log for easier debugging)
 
 IN EACH SAMPLE DIRECTORY (e.g. ID18_Proband)

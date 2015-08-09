@@ -62,6 +62,4 @@ java -jar /opt/applications/gatk/3.3-0/GenomeAnalysisTK.jar \
    --variant:father "${VCFDir}/${VCFarray[0]}" \
    --variant:mother "${VCFDir}/${VCFarray[1]}" \
    --variant:proband "${VCFDir}/${VCFarray[2]}" \
-   -genotypeMergeOptions PRIORITIZE \
-   -priority proband,mother,father \
-	  -o combinedPrioritized.vcf \
+	  -o combined.vcf \
