@@ -8,7 +8,7 @@ The main goal is to call variants in the mitochondrial genome.
 mtPipeline incorporates the variant calling portion of 
 the mitochondrial analysis pipeline in MToolBox (PMID:25028726)
 
-##System Requirements
+## System Requirements
 - UNIX-based OS
 - Python2.7 (www.python.org)
 for the following programs, specify path in parameters.sh:
@@ -21,7 +21,7 @@ for the following programs, specify path in parameters.sh:
 - R
 
 
-##What's included in the mtPipeline package?
+## What's included in the mtPipeline package?
 /scripts:               (all the code for the pipeline)
 mtPipeline.qsub     	(an example script that you may adapt or use an an example to run mtPipeline)
 mtPipeline.sh       	(the main script you will want to run)
@@ -52,14 +52,14 @@ chrRCRS.dict
 MToolBox 				
 
 
-##What happens in mtPipeline? (Outline + Specifications)
-###INPUTS
+## What happens in mtPipeline? (Outline + Specifications)
+### INPUTS
 The pipeline needs two things: 
 -path to the parameters.sh file (should be in mtPipeline folder; set the paths as needed)
 -path to the folder that contains a subdirectory for each sample. 
 Each  subdirectory is expected to contain part.bam files to be merged to create a single bam file for the sample.
 
-###PROCESSING
+### PROCESSING
 For each sample directory, 
 1) merge the part.bam files > exome.bam file
 2) get and analyze depth of coverage of the chrM region of exome.bam file
@@ -77,7 +77,7 @@ For each sample directory,
 
 After that, a new VCF folder for the cohort is created and the VCF for the cohort are merged into a single "combined.vcf".
 
-###OUTPUTS
+### OUTPUTS
 IN THE COHORT DIRECTORY (e.g. ID18)
 - directory for each SAMPLE (e.g. ID18_Father, ID18_Mother, ID18_Proband)
 - "VCF" directory 
@@ -142,9 +142,9 @@ NOTE: results are only organized here for reference--not in the actual folder.
 		<sampleName>_VCF.vcf (contains all the mitochondrial variant positions against RSRS and other meta-information)
 -"tmp" Directory: used during analysis to store temporary files. Empty when processes are complete.
 
-###TO DO
+### TO DO
 
-##Prepping Inputs
+## Prepping Inputs
 "-i" PREPPING THE PATH TO THE SAMPLE DIRECTORIES (aka cohort)
 	This is the path to your cohort directory (e.g. ID18)
 	It should hold ONLY the sample directories (e.g. ID18_Father, ID18_Mother, ID18_Proband)
@@ -162,7 +162,7 @@ NOTE: results are only organized here for reference--not in the actual folder.
 
 
 
-##Running mtPipeline (Overview)
+## Running mtPipeline (Overview)
 
 NOTE: Make sure you read the TO DO section below before running mtPipeline.
 
