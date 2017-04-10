@@ -1,6 +1,6 @@
-==================
+
 mtPipeline READ ME
-===================
+
 
 mtPipeline is a bioinformatics pipeline written by Tina Quach (2015). 
 It is aimed at analyzing mitchondrial DNA and was created in order to augment 
