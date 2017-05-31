@@ -22,34 +22,34 @@ for the following programs, specify path in parameters.sh:
 
 
 ## What's included in the mtPipeline package?
-/scripts:               (all the code for the pipeline)
-mtPipeline.qsub     	(an example script that you may adapt or use an an example to run mtPipeline)
-mtPipeline.sh       	(the main script you will want to run)
-simplepipe.py       	(python script that takes care of coverage analysis and mt extraction)
-myMtoolbox.sh       	(bash script that process the extracted mitchondrial DNA bam file and calls MToolBox functions to analyze it--variant call)
-parameters.sh       	(bash script that sets up the environment for the pipeline) 
-myAssembleMTgenome.py   (augmented MToolBox script for assembling the MTgenome)
-mtVariantCaller.py  	(MToolbox script for variant calling)
-VCFoutput.py 			(MToolBox script for creating the VCF)
-combineVCF.sh 			(combines the VCFs of a cohort into a single VCF for haplogroup analysis)
-completeVCF.py   		(generates completed.vcf from combined.vcf using info extracted from the samples' assembly-table.txt to fill missing info)
-pipeFunctions.py 		(contains the sam/bam analysis functions called by simplepipe.py)
-histDepth.R 			(creates a histogram of the depth of coverage for each; called by simplepipe.py)
-parameters.sh 			(sourced in mtPipeline, denotes the paths to various tools and executables)
+**/scripts**:               (all the code for the pipeline) <br/>
+**mtPipeline.qsub**     	(an example script that you may adapt or use an an example to run mtPipeline) <br/>
+**mtPipeline.sh**       	(the main script you will want to run) <br/>
+**simplepipe.py**       	(python script that takes care of coverage analysis and mt extraction) <br/>
+**myMtoolbox.sh**       	(bash script that process the extracted mitchondrial DNA bam file and calls MToolBox functions to analyze it--variant call) <br/>
+**parameters.sh**       	(bash script that sets up the environment for the pipeline) <br/>
+**myAssembleMTgenome.py**   (augmented MToolBox script for assembling the MTgenome) <br/>
+**mtVariantCaller.py**  	(MToolbox script for variant calling) <br/>
+**VCFoutput.py** 			(MToolBox script for creating the VCF) <br/>
+**combineVCF.sh** 			(combines the VCFs of a cohort into a single VCF for haplogroup analysis) <br/>
+**completeVCF.py**   		(generates completed.vcf from combined.vcf using info extracted from the samples' assembly-table.txt to fill missing info) <br/>
+**pipeFunctions.py** 		(contains the sam/bam analysis functions called by simplepipe.py) <br/>
+**histDepth.R** 			(creates a histogram of the depth of coverage for each; called by simplepipe.py) <br/>
+**parameters.sh** 			(sourced in mtPipeline, denotes the paths to various tools and executables) <br/> <br/>
 
 
-/ref:					(reference data = Revised Cambridge Reference Sequence)
-chrRCRS.fa
-chrRCRS.fa.fai
-chrRCRS.fa.sa
-chrRCRS.fa.pac
-chrRCRS.fa.bwt
-chrRCRS.fa.ann
-chrRCRS.fa.amb
-chrRCRS.dict
+**/ref**:					(reference data = Revised Cambridge Reference Sequence) <br/>
+**chrRCRS.fa** <br/>
+**chrRCRS.fa.fai** <br/>
+**chrRCRS.fa.sa** <br/>
+**chrRCRS.fa.pac** <br/>
+**chrRCRS.fa.bwt** <br/>
+**chrRCRS.fa.ann** <br/>
+**chrRCRS.fa.amb** <br/>
+**chrRCRS.dict** <br/>
 
-/externalTools
-MToolBox 				
+/externalTools <br/>
+**MToolBox**				
 
 
 ## What happens in mtPipeline? (Outline + Specifications)
